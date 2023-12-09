@@ -4,14 +4,13 @@ import { Schema, model } from 'mongoose';
 const userSchema = new Schema({
     name: String,
     lastName: String,
+    phone: String,
     email: String,
-    dpi: String,
     password: String,
-    pathImage: String,
-    idImage: String,
-    friends: Array,
-    requests: Array,
-    friendRequests: Array
+    birthDate: Date,
+    role: Number,
+    rentedBooks: Array,
+    purchasedBooks: Array
 });
 
 // userSchema.methods.encryptPassword = async (password) => {

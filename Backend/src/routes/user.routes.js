@@ -3,7 +3,7 @@ import { getUser, updateInfoUser } from "../controllers/user.controller.js";
 
 const router = Router();
 
-router.get("/user/:id", getUser);
-router.post("/user/update/info", updateInfoUser);
+router.get("/:id", getUser);
+router.post("/update", updateInfoUser);
 
 export default router;

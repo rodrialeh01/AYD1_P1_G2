@@ -20,8 +20,8 @@ app.use(responseMiddleware);
 connect(); 
 
 app.use(testHandler);
-app.use(authHandler);
-app.use(userHandler);
+app.use("/auth", authHandler);
+app.use("/user", userHandler);
 app.use(error404Handler);
 
 app.listen(API_PORT);
