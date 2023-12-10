@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --detectOpenHandles --forceExit"
   },
   "author": "Daniel Dubon",
   "license": "ISC",
@@ -18,7 +19,9 @@
     "mongoose": "^7.5.4"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "morgan": "^1.10.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
   }
 }
