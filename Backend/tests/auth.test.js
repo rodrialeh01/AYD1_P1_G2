@@ -1,4 +1,4 @@
-import app from "../src/index.js";
+import app from "../src/app.js";
 import request from "supertest";
 
 describe("Test the singup path", () => {
