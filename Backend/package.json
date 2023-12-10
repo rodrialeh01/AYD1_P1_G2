@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --detectOpenHandles --forceExit"
+    "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --runInBand --detectOpenHandles --forceExit"
   },
   "author": "Daniel Dubon",
   "license": "ISC",
