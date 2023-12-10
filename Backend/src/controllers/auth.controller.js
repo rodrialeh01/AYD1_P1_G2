@@ -53,6 +53,7 @@ export const signInPassword = async (req, res) => {
         }
 
         const user = {
+            _id: isRegistered._id,
             name: isRegistered.name,
             lastName: isRegistered.lastName,
             email: isRegistered.email,
