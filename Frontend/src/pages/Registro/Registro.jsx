@@ -197,8 +197,15 @@ function Registro() {
           >
             Registrar
           </button>
-          {/*<p className="text-sm ml-2 text-white">O Inicia Sesion
-          <Link to="/" className="text-sm ml-2 hover:text-white cursor-pointer text-azul">Inicia Sesión</Link></p>*/}
+          <p className="mt-6 text-xs text-white text-center">
+            También puedes{" "}
+            <Link
+              to="/"
+              className="border-b border-rojo1 border-dotted text-red-500 hover:text-red-800 transition-all duration-300 ease-in-out"
+            >
+              Iniciar Sesión
+            </Link>
+          </p>
         </form>
       </div>
     </div>

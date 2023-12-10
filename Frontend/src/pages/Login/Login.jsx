@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../../userCtx/User";
 
+import "./Login.css";
 function Login() {
+  //const { logged, setLogged } = useUser();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+  /* useEffect(() => {
+    if (logged) {
+      navigate("/user/home")
+    }
+  }, [logged]);*/
+
   return (
     <>
       <div className="min-h-screen loginbg text-white flex justify-center fuente">
         <div className="max-w-screen-xl m-0 sm:m-10 bg-gris3 shadow sm:rounded-lg flex justify-center flex-1">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <form className="bg-gris3">
-                <div className="flex flex-col items-center">
-                <div style={{ width: "200px", height: "200px"}}>
+              <div className="flex flex-col items-center">
+                <div style={{ width: "200px", height: "200px" }}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -24,7 +39,7 @@ function Login() {
                     />
                   </svg>
                 </div>
-                </div>
+              </div>
               <div className="mt-12 flex flex-col items-center">
                 <h1 className="text-2xl xl:text-3xl font-bold">
                   Inicia Sesión
@@ -51,6 +66,17 @@ function Login() {
                     >
                       <span className="ml-3">Iniciar Sesión</span>
                     </button>
+                    <p
+                      className="mt-6 text-xs text-white text-center"
+                    >
+                      Si no tienes una cuenta,{" "}
+                      <Link
+                        to="/registro"
+                        className="border-b border-rojo1 border-dotted text-red-500 hover:text-red-800 transition-all duration-300 ease-in-out"
+                      >
+                        Registrate Aqui
+                      </Link>
+                    </p>
                   </div>
                 </div>
               </div>
