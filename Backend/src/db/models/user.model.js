@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-// import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 const userSchema = new Schema({
     name: String,
@@ -7,19 +7,19 @@ const userSchema = new Schema({
     phone: String,
     email: String,
     password: String,
-    birthDate: Date,
+    birthDate: String,
     role: Number,
     rentedBooks: Array,
     purchasedBooks: Array
 });
 
-// userSchema.methods.encryptPassword = async (password) => {
-//     const salt = await bcrypt.genSalt(5);
-//     return bcrypt.hash(password, salt);
-// };
+userSchema.methods.encryptPassword = async (password) => {
+    const salt = await bcrypt.genSalt(5);
+    return bcrypt.hash(password, salt);
+};
 
-// userSchema.methods.validatePassword = function (password) {
-//     return bcrypt.compare(password, this.password);
-// };
+userSchema.methods.validatePassword = async (password, passwordDB) => {
+    return bcrypt.compare(password, passwordDB);
+};
 
 export const User = model('users', userSchema);

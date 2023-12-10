@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Registro from "../pages/Registro/Registro";
 import CRUDLibros from "../pages/Admin/CRUDLibros";
@@ -11,6 +12,10 @@ export const router = createBrowserRouter([
     {
         path:'/registro',
         element: <Registro />
+    },
+    {
+        path: '/home',
+        element: <Home />
     },
     {
         path: '/AdminLibros',
