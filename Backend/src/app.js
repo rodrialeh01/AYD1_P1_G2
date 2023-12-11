@@ -9,6 +9,7 @@ import authHandler from "./routes/auth.routes.js";
 import userHandler from "./routes/user.routes.js";
 import error404Handler from "./routes/404.routes.js";
 import bookHandler from "./routes/book.routes.js";
+import commentHandler from "./routes/comment.routes.js";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(testHandler);
 app.use("/auth", authHandler);
 app.use("/user", userHandler);
 app.use("/book", bookHandler);
+app.use("/comment", commentHandler);
 app.use(error404Handler);
 
 export default app;

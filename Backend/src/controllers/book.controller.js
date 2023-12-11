@@ -32,13 +32,13 @@ export const createBook = async (req, res) => {
 export const getBooks = async (req, res) => {
     
     try {
-        const books = await Book.find(
+        const libros = await Book.find(
             { bookState: { $in: [bookState.AVAILABLE, bookState.RENTED] } },
             { __v: 0}
           );
           
 
-        res.response(books, 'Books retrieved successfully', 200);
+        res.response(libros, 'Books retrieved successfully', 200);
 
     } catch (error) {
         console.log(error);
