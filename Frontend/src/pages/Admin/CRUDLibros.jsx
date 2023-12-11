@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./CRUDLibros.css";
-
+import Service from "../../Service/Service";
 export default function CRUDLibros() {
   const [books, setBooks] = useState([]);
   const [response, setResponse] = useState("");
@@ -8,16 +8,19 @@ export default function CRUDLibros() {
   useEffect(() => {
     const obtData = async () => {
       try {
-        /*let response = await Service.listarLibros();
-            if (response.status === 200){
-                setData(response.data);
-            }*/
+        let res = await Service.getBooks();
+        if (res.status === 200) {
+          setBooks(res.data);
+          console.log(res.data);
+        } 
       } catch (e) {
         console.log(e);
       }
     };
     obtData();
-  }, []);
+
+    setResponse("");
+  }, [response]);
 
   return (
     <div class="h-full w-full overflow-y-auto bg-gradient-to-t from-rojo4 to-rojo2 scrollbar-hide">
@@ -26,7 +29,7 @@ export default function CRUDLibros() {
   );
 }
 
-function Libros() {
+function Libros(books, response, setResponse) {
   const [showActualizar, setShowActualizar] = useState(false);
   const [showEliminar, setShowEliminar] = useState(false);
   const [showDetalle, setShowDetalle] = useState(false);
@@ -36,44 +39,7 @@ function Libros() {
 
   const [title, setTitle] = useState("");
 
-  const [data, setData] = useState([
-    {
-      idBook: "1",
-      title: "The Catcher in the Rye",
-      synopsis:
-        "A classic novel about the struggles of adolescence and the search for identity.",
-      purchasePrice: 15.99,
-      rentalPrice: 5.99,
-      returnDate: "2023-12-31",
-      author: "J.D. Salinger",
-      editorial: "Little, Brown and Company",
-      bookState: 1,
-    },
-    {
-      idBook: "2",
-      title: "To Kill a Mockingbird",
-      synopsis:
-        "A powerful exploration of racial injustice in the American South.",
-      purchasePrice: 12.49,
-      rentalPrice: 4.99,
-      returnDate: "2023-12-15",
-      author: "Harper Lee",
-      editorial: "J.B. Lippincott & Co.",
-      bookState: 2,
-    },
-    {
-      idBook: "3",
-      title: "1984",
-      synopsis:
-        "A dystopian novel depicting a totalitarian society and the power of government control.",
-      purchasePrice: 18.99,
-      rentalPrice: 6.99,
-      returnDate: "2024-01-15",
-      author: "George Orwell",
-      editorial: "Secker & Warburg",
-      bookState: 0,
-    },
-  ]);
+  const [data, setData] = useState([]);
 
   const [libroData, setLibroData] = useState({
     idBook: "",
@@ -86,6 +52,15 @@ function Libros() {
     editorial: "",
     bookState: 0,
   });
+
+  useEffect(() => {
+    obtenerDatos();
+  }, []);
+
+  const obtenerDatos = async () => {
+    setData(books);
+  };
+  
 
   const handleInputChange = (event) => {
     setLibroData({

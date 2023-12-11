@@ -2,13 +2,14 @@ import { createContext, useContext, useState } from "react";
 
 export const UserContext = createContext();
 
-export const UserProvider = ({ children }) => {
-    const user = JSON.parse(localStorage.getItem("user"));
+const UserProvider = ({ children }) => {
+    const user = JSON.parse(localStorage.getItem('data_user'));
+    console.log(localStorage.getItem('data_user'));
     let datos = false;
+    console.log(user);
     if (user) {
         datos = true;
     }
-
     const [logged, setLogged] = useState(datos);
 
     return (
@@ -17,5 +18,7 @@ export const UserProvider = ({ children }) => {
         </UserContext.Provider>
     );
 }
+
+export default UserProvider;
 
 export const useUser = () => useContext(UserContext);
