@@ -23,7 +23,7 @@ const Sidebar = () => {
         {
             name: "Historial",
             icon: <MdOutlineHistory className="text-3xl"/>,
-            path: "/",
+            path: "/history",
         },
         {
             name: "Mi Perfil",
