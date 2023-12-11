@@ -10,8 +10,8 @@ export default function CRUDLibros() {
       try {
         let res = await Service.getBooks();
         if (res.status === 200) {
-          setBooks(res.data);
-          console.log(res.data);
+          setBooks(res.data.data);
+          console.log("xd: ", res.data.data);
         } 
       } catch (e) {
         console.log(e);
@@ -19,7 +19,11 @@ export default function CRUDLibros() {
     };
     obtData();
 
-    setResponse("");
+    setTimeout(() => {
+      
+    }, 500);
+
+    setResponse("r");
   }, [response]);
 
   return (
@@ -30,6 +34,11 @@ export default function CRUDLibros() {
 }
 
 function Libros(books, response, setResponse) {
+  useEffect(() => {
+    obtenerDatos();
+  }, []);
+  
+
   const [showActualizar, setShowActualizar] = useState(false);
   const [showEliminar, setShowEliminar] = useState(false);
   const [showDetalle, setShowDetalle] = useState(false);
@@ -53,12 +62,18 @@ function Libros(books, response, setResponse) {
     bookState: 0,
   });
 
-  useEffect(() => {
-    obtenerDatos();
-  }, []);
-
   const obtenerDatos = async () => {
-    setData(books);
+    try {
+      let res = await Service.getBooks();
+      if (res.status === 200) {
+        setData(res.data.data);
+        console.log("xd: ", res.data.data);
+      } else {
+        console.log("error");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
   
 
