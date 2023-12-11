@@ -26,7 +26,7 @@ const Home = () => {
     return(
         <div className="flex bg-zinc-900">
             <Sidebar />
-            <div className="p-7 text-2xl font-semibold flex-1 h-screen">
+            <div className="p-7 text-2xl font-semibold flex-1 h-screen overflow-y-scroll scrollbar-hide">
               <h1 className="text-white text-4xl pb-3">{titulo}</h1>
                 <h1 className="text-white">
                 <svg
@@ -45,7 +45,7 @@ const Home = () => {
                   </svg>
                   Catálogo de Libros
                 </h1>
-                <div id="cartas" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {arrayprueba.map((book, index) => (
                   <BookCard key={index} book={book} />
                 ))}

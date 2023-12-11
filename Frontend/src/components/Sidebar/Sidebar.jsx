@@ -18,7 +18,7 @@ const Sidebar = () => {
         {
             name: "Mis Libros",
             icon: <PiBookBookmarkFill className="text-3xl"/>,
-            path: "/",
+            path: "/mybooks",
         },
         {
             name: "Historial",
