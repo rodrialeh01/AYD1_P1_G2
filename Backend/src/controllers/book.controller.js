@@ -1,5 +1,6 @@
 import { Book } from '../db/models/book.model.js';
 import { bookState } from '../config/constants.js';
+import { User } from '../db/models/user.model.js';
 
 
 export const createBook = async (req, res) => {
@@ -108,4 +109,51 @@ try {
     console.log(error);
     res.response(null, error.message, 500);
 }
+}
+
+export const buyBook = async (req, res) => {
+    try {
+        const { idBook, idUser } = req.body;
+
+        // Buscar el libro
+
+        const isRegistered = await Book.findOne({ _id: idBook }, { title: 1, bookState: 1 });
+
+        if (!isRegistered) {
+            res.response(null, 'Book not registered', 400);
+            return;
+        }
+
+        // Buscar el usuario
+
+        const isRegisteredUser = await User.findOne({ _id: idUser }, { name: 1 });
+
+        if (!isRegisteredUser) {
+            res.response(null, 'User not registered', 400);
+            return;
+        }
+
+        // Verificar que el libro este disponible
+
+        if (isRegistered.bookState !== bookState.AVAILABLE) {
+            console.log(isRegistered.bookState);
+            console.log(bookState.AVAILABLE);
+            res.response(null, 'Book not available', 400);
+            return;
+        }
+
+        // Actualizar el estado del libro
+
+        await Book.updateOne({ _id: idBook }, { bookState: bookState.SOLD });
+
+        // Agregar el libro a la lista de libros comprados del usuario
+
+        await User.updateOne({ _id: idUser }, { $push: { purchasedBooks: idBook } });
+
+        res.response(null, 'Book purchased successfully', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
 }
