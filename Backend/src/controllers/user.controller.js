@@ -1,5 +1,6 @@
 import { User } from '../db/models/user.model.js';
 import { Book } from '../db/models/book.model.js';
+import { Comment } from '../db/models/comment.model.js';
 
 export const getUser = async (req, res) => {
     try{
@@ -48,14 +49,21 @@ export const deleteUser = async (req, res) => {
     try{
         const { id } = req.params;
 
-        const isRegistered = await User.findOne({ _id: id }, { email: 1 });
+        const isRegistered = await User.findOne({ _id: id }, { email: 1, rentedBooks: 1 });
 
         if (!isRegistered) {
             res.response(null, 'User not registered', 400);
             return;
         }
 
+        if (isRegistered.rentedBooks.length > 0) {
+            res.response(null, 'User has rented books', 400);
+            return;
+        }
+
         await User.deleteOne({ _id: id });
+
+        await Comment.deleteMany({ idUser: id });
 
         res.response(null, 'User deleted successfully', 200);
 
@@ -81,7 +89,6 @@ export const getBooks = async (req, res) => {
     }
 };
 
-// getAllUsers
 export const getAllUsers = async (req, res) => {
     try{
         const users = await User.find({}, { __v: 0, password: 0 });
