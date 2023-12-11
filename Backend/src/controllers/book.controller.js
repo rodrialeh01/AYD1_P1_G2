@@ -157,3 +157,94 @@ export const buyBook = async (req, res) => {
         res.response(null, error.message, 500);
     }
 }
+
+
+export const rentBook = async (req, res) => {
+    try {
+        const { idBook, idUser, returnDate } = req.body;
+
+        // Buscar el libro
+
+        const isRegistered = await Book.findOne({ _id: idBook }, { title: 1, bookState: 1 });
+
+        if (!isRegistered) {
+            res.response(null, 'Book not registered', 400);
+            return;
+        }
+
+        // Buscar el usuario
+
+        const isRegisteredUser = await User.findOne({ _id: idUser }, { name: 1 });
+
+        if (!isRegisteredUser) {
+            res.response(null, 'User not registered', 400);
+            return;
+        }
+
+        // Verificar que el libro este disponible
+
+        if (isRegistered.bookState !== bookState.AVAILABLE) {
+            res.response(null, 'Book not available', 400);
+            return;
+        }
+
+        // Actualizar el estado del libro
+
+        await Book.updateOne({ _id: idBook }, { bookState: bookState.RENTED, returnDate: returnDate });
+
+        // Agregar el libro a la lista de libros alquilados del usuario
+
+        await User.updateOne({ _id: idUser }, { $push: { rentedBooks: idBook } });
+
+        res.response(null, 'Book rented successfully', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+}
+
+export const returnBook = async (req, res) => {
+    try {
+        const { idBook, idUser } = req.body;
+
+        // Buscar el libro
+
+        const isRegistered = await Book.findOne({ _id: idBook }, { title: 1, bookState: 1 });
+
+        if (!isRegistered) {
+            res.response(null, 'Book not registered', 400);
+            return;
+        }
+
+        // Buscar el usuario
+
+        const isRegisteredUser = await User.findOne({ _id: idUser }, { name: 1 });
+
+        if (!isRegisteredUser) {
+            res.response(null, 'User not registered', 400);
+            return;
+        }
+
+        // Verificar que el libro este alquilado
+
+        if (isRegistered.bookState !== bookState.RENTED) {
+            res.response(null, 'Book not rented', 400);
+            return;
+        }
+
+        // Actualizar el estado del libro
+
+        await Book.updateOne({ _id: idBook }, { bookState: bookState.AVAILABLE, returnDate: null });
+
+        // Eliminar el libro de la lista de libros alquilados del usuario
+
+        await User.updateOne({ _id: idUser }, { $pull: { rentedBooks: idBook } });
+
+        res.response(null, 'Book returned successfully', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+}
