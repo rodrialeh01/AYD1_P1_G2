@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./CRUDLibros.css";
-import Service from "../../Service/Service";
 import toast, { Toaster } from "react-hot-toast";
+import Service from "../../Service/Service";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import "./CRUDLibros.css";
 
 export default function CRUDLibros() {
   const [books, setBooks] = useState([]);
@@ -230,8 +231,9 @@ function Libros(books, response, setResponse) {
   };
 
   return (
-    <>
-      <div class="flex h-screen">
+    <div className="flex">
+            <Sidebar />
+      <div class="flex-1 h-screen overflow-y-scroll scrollbar-hide">
         <Toaster />
         <div class="m-auto content-center">
           <section className="flex items-end h-50 text-white p-8 ">
@@ -1072,6 +1074,6 @@ function Libros(books, response, setResponse) {
           ) : null}
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../../userCtx/User";
 import toast, { Toaster } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import Service from "../../Service/Service";
+import { useUser } from "../../userCtx/User";
 
 import "./Login.css";
 function Login() {
@@ -14,7 +14,7 @@ function Login() {
   useEffect(() => {
     console.log(logged);
     if (logged) {
-      navigate("/home");
+      navigate("/user/home");
     } else {
       navigate("/");
     }
@@ -50,7 +50,7 @@ function Login() {
           progress: undefined,
         });
         setTimeout(() => {
-          navigate("/home");
+          navigate("/user/home");
         }
         , 3000);
 
