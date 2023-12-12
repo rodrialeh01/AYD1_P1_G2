@@ -45,12 +45,12 @@ const Sidebar = () => {
         {
             name: "Administración de Libros",
             icon: <GiBookshelf className="text-3xl"/>,
-            path: "/",
+            path: "/AdminLibros",
         },
         {
             name: "Eliminar Usuarios",
             icon: <FaUserLargeSlash className="text-3xl"/>,
-            path: "/",
+            path: "/AdminUsers",
         },
         {
             name: "Mi Perfil",
