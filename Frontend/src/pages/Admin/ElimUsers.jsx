@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./ELIMUsers.css";
-import Service from "../../Service/Service";
 import toast, { Toaster } from "react-hot-toast";
+import Service from "../../Service/Service";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import "./ELIMUsers.css";
 
 export default function ELIMUsers() {
   const usuario = JSON.parse(localStorage.getItem("data_user"));
@@ -170,8 +171,9 @@ function Users() {
   };
 
   return (
-    <>
-      <div class="flex h-screen">
+      <div className="flex">
+            <Sidebar />
+      <div class="flex-1 h-screen overflow-y-scroll scrollbar-hide">
         <Toaster />
         <div class="m-auto content-center">
           <section className="flex items-end h-50 text-white p-8 ">
@@ -340,6 +342,6 @@ function Users() {
           ) : null}
         </div>
       </div>
-    </>
+    </div>
   );
 }

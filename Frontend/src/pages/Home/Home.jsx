@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Service from "../../Service/Service";
 import BookCard from "../../components/BookCard/BookCard";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { useUser } from "../../userCtx/User";
 const Home = () => {
+  const navigate = useNavigate();
   const arrayprueba = [
     {titulo:"titulo1", sinopsis:"sinopsis1", renta:100, compra:200},
     {titulo:"titulo2", sinopsis:"sinopsis2", renta:100, compra:200},
@@ -11,16 +15,29 @@ const Home = () => {
     {titulo:"titulo6", sinopsis:"sinopsis6", renta:100, compra:200},
   ]
   const [titulo, setTitulo] = useState('')
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { logged, setLogged } = useUser();
   useEffect(() => {
-    const hora = new Date().getHours();
-
-    if (hora >= 5 && hora < 12) {
-      setTitulo(`Buenos días ${"usuario"}!`);
-    } else if (hora >= 12 && hora < 18) {
-      setTitulo(`Buenas tardes ${"usuario"}!`);
-    } else {
-      setTitulo(`Buenas noches ${"usuario"}!`);
+    if (!logged) {
+      navigate("/")
     }
+    const user = JSON.parse(localStorage.getItem("data_user"));
+    console.log(localStorage.getItem('data_user'));
+    setIsAdmin(user.rol == 1);
+    Service.getUser(user.id).then((res) => {
+      console.log(res);
+      const hora = new Date().getHours();
+
+      if (hora >= 5 && hora < 12) {
+        setTitulo(`Buenos días ${res.data.data.name + " " + res.data.data.lastName}!`);
+      } else if (hora >= 12 && hora < 18) {
+        setTitulo(`Buenas tardes ${res.data.data.name + " " + res.data.data.lastName}!`);
+      } else {
+        setTitulo(`Buenas noches ${res.data.data.name + " " + res.data.data.lastName}!`);
+      }
+    });
+
+    
   }, [])
 
     return(
@@ -47,7 +64,7 @@ const Home = () => {
                 </h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {arrayprueba.map((book, index) => (
-                  <BookCard key={index} book={book} />
+                  <BookCard key={index} book={book} rol={isAdmin} />
                 ))}
                 </div>
             </div>
