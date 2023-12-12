@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import Book from "../pages/Book/Book";
 import EditProfile from "../pages/EditProfile/EditProfile";
 import History from "../pages/History/History";
 import Home from "../pages/Home/Home";
@@ -35,5 +36,9 @@ export const router = createBrowserRouter([
     {
         path:'/history',
         element: <History/>
+    },
+    {
+        path: '/book',
+        element: <Book />
     }
 ]);

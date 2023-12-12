@@ -12,7 +12,7 @@ const EditProfile = () => {
     return (
         <div className="flex bg-zinc-900">
             <Sidebar />
-            <div className="p-7 text-2xl font-semibold flex-1 h-screen">
+            <div className="p-7 text-2xl font-semibold flex-1 h-screen overflow-y-scroll scrollbar-hide">
                 <div>
                     <h1 className="text-white text-3xl">
                     <FaUserLarge className="text-3xl inline-block mr-2"/>
