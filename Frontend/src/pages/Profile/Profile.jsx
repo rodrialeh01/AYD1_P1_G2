@@ -7,7 +7,7 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const handlerEdit = () => {
-    navigate("/editprofile");
+    navigate("/user/editprofile");
   };
 
   const usuario = JSON.parse(localStorage.getItem("data_user"));
