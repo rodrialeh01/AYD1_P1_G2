@@ -5,6 +5,7 @@ import { IoIosHome } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
 import { MdOutlineHistory } from "react-icons/md";
 import { PiBookBookmarkFill } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
     const [open, setOpen] = useState(true);
@@ -12,22 +13,22 @@ const Sidebar = () => {
         {
             name: "Home",
             icon: <IoIosHome className="text-3xl"/>,
-            path: "/",
+            path: "/home",
         },
         {
             name: "Mis Libros",
             icon: <PiBookBookmarkFill className="text-3xl"/>,
-            path: "/",
+            path: "/mybooks",
         },
         {
             name: "Historial",
             icon: <MdOutlineHistory className="text-3xl"/>,
-            path: "/",
+            path: "/history",
         },
         {
             name: "Mi Perfil",
             icon: <FaUserLarge className="text-3xl"/>,
-            path: "/",
+            path: "/myprofile",
         },
         {
             name: "Cerrar Sesión",
@@ -39,7 +40,7 @@ const Sidebar = () => {
         {
             name: "Home",
             icon: <IoIosHome className="text-3xl"/>,
-            path: "/",
+            path: "/home",
         },
         {
             name: "Administración de Libros",
@@ -54,7 +55,7 @@ const Sidebar = () => {
         {
             name: "Mi Perfil",
             icon: <FaUserLarge className="text-3xl"/>,
-            path: "/",
+            path: "/myprofile",
         },
         {
             name: "Cerrar Sesión",
@@ -62,6 +63,12 @@ const Sidebar = () => {
             path: "/",
         }
     ]
+    const navigate = useNavigate();
+
+    const handlerGoTo = (path) => {
+        navigate(path);
+    }
+
     return(
         <div className="flex">
             <div className={`${open ? 'w-72' : 'w-20'} duration-300 h-screen p-5 pt-8 bg-rojo2 relative`}>
@@ -89,7 +96,7 @@ const Sidebar = () => {
                 </div>
                 <ul>
                     {Menus.map((item, index) => (
-                        <li key={index} className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer pt-2 mt-2 pb-2 mb-2 hover:bg-rojo1 rounded-md`}>
+                        <li key={index} className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer pt-2 mt-2 pb-2 mb-2 hover:bg-rojo1 rounded-md`} onClick={() => handlerGoTo(item.path)}>
                             <div className={`${!open ? 'mr-4' : ''}`}>{item.icon}</div>
                             <span className={`${!open && 'hidden'} origin-left duration-200`}>{item.name}</span>
                         </li>

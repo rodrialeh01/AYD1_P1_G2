@@ -1,7 +1,7 @@
 import React from "react";
 import { FaEye } from "react-icons/fa";
 import { MdOutlineAddShoppingCart, MdOutlineSell } from "react-icons/md";
-const BookCard = ({book, key}) => {
+const BookCard = ({book}) => {
   return (
     <div className="relative flex flex-col mt-6 text-white bg-red-900 shadow-md bg-clip-border rounded-xl max-w-full sm:max-w-96 p-4">
       <div className="p-6">
