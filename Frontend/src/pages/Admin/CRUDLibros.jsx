@@ -3,28 +3,40 @@ import "./CRUDLibros.css";
 import Service from "../../Service/Service";
 import toast, { Toaster } from "react-hot-toast";
 
-
 export default function CRUDLibros() {
   const [books, setBooks] = useState([]);
   const [response, setResponse] = useState("");
-
+  const usuario = JSON.parse(localStorage.getItem("data_user"));
   useEffect(() => {
+    if (usuario.rol !== 1) {
+      toast.error("No tienes permiso para acceder a esta página.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 1000);
+    }
+
     const obtData = async () => {
       try {
         let res = await Service.getBooks();
         if (res.status === 200) {
           setBooks(res.data.data);
           console.log("xd: ", res.data.data);
-        } 
+        }
       } catch (e) {
         console.log(e);
       }
     };
     obtData();
 
-    setTimeout(() => {
-      
-    }, 500);
+    setTimeout(() => {}, 500);
 
     setResponse("r");
   }, [response]);
@@ -37,10 +49,12 @@ export default function CRUDLibros() {
 }
 
 function Libros(books, response, setResponse) {
+  const usuario = JSON.parse(localStorage.getItem("data_user"));
   useEffect(() => {
-    obtenerDatos();
+    if (usuario.rol === 1) {
+      obtenerDatos();
+    }
   }, []);
-  
 
   const [showActualizar, setShowActualizar] = useState(false);
   const [showEliminar, setShowEliminar] = useState(false);
@@ -78,7 +92,6 @@ function Libros(books, response, setResponse) {
       console.log(e);
     }
   };
-  
 
   const handleInputChange = (event) => {
     setLibroData({
@@ -137,8 +150,7 @@ function Libros(books, response, setResponse) {
           window.location.reload();
           setResponse("act");
         }, 750);
-      }
-      else {
+      } else {
         console.log("error");
       }
     } catch (e) {
@@ -175,27 +187,24 @@ function Libros(books, response, setResponse) {
     }
   };
 
-
   const openModal = async (opcion, id) => {
     // 1 = Actualizar
     // 2 = Eliminar
     // 3 = Detalle
     // 4 = Agregar Libro
-    if (opcion != 4){
-    try {
-      let res = await Service.getBook(id);
-      if (res.status === 200) {
-        setLibroData(res.data.data);
-        console.log("DATA OBTENIDA: ", res.data.data);
-      } else {
-        console.log("error");
+    if (opcion != 4) {
+      try {
+        let res = await Service.getBook(id);
+        if (res.status === 200) {
+          setLibroData(res.data.data);
+          console.log("DATA OBTENIDA: ", res.data.data);
+        } else {
+          console.log("error");
+        }
+      } catch (e) {
+        console.log(e);
       }
-
-    } catch (e) {
-      console.log(e);
-    }}
-
-    
+    }
 
     if (opcion === 1) {
       // Actualizar
@@ -223,7 +232,7 @@ function Libros(books, response, setResponse) {
   return (
     <>
       <div class="flex h-screen">
-        < Toaster />
+        <Toaster />
         <div class="m-auto content-center">
           <section className="flex items-end h-50 text-white p-8 ">
             <div class="md:flex md:items-center place-content-between ltr:ml-3 rtl:mr-3">
@@ -420,7 +429,9 @@ function Libros(books, response, setResponse) {
                     {/*body*/}
 
                     <form
-                      onSubmit={(e) => {handleUpdate(e)}}
+                      onSubmit={(e) => {
+                        handleUpdate(e);
+                      }}
                     >
                       <div className="relative p-6 flex-auto">
                         <div class="w-full ">
@@ -527,7 +538,6 @@ function Libros(books, response, setResponse) {
                                 ></input>
                               </div>
                             </div>
-                           
                           </div>
 
                           <label
@@ -637,8 +647,11 @@ function Libros(books, response, setResponse) {
                         ?
                       </h1>{" "}
                     </div>
-                    <form className="justify-center flex"
-                    onSubmit={(e) => {handleDelete(e)}}
+                    <form
+                      className="justify-center flex"
+                      onSubmit={(e) => {
+                        handleDelete(e);
+                      }}
                     >
                       <button
                         type="submit"
@@ -889,8 +902,10 @@ function Libros(books, response, setResponse) {
                     </div>
                     {/*body*/}
 
-                    <form 
-                    onSubmit={(e) => {handleCreate(e)}}
+                    <form
+                      onSubmit={(e) => {
+                        handleCreate(e);
+                      }}
                     >
                       <div className="relative p-6 flex-auto">
                         <div class="w-full ">
@@ -992,7 +1007,6 @@ function Libros(books, response, setResponse) {
                                 ></input>
                               </div>
                             </div>
-                            
                           </div>
 
                           <label
