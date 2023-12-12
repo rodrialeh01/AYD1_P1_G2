@@ -171,10 +171,9 @@ function Users() {
   };
 
   return (
-      <div className="flex">
-            <Sidebar />
-      <div class="flex-1 h-screen overflow-y-scroll scrollbar-hide">
+      <div class="flex h-screen ">
         <Toaster />
+        <Sidebar />
         <div class="m-auto content-center">
           <section className="flex items-end h-50 text-white p-8 ">
             <div class="md:flex md:items-center place-content-between ltr:ml-3 rtl:mr-3">
@@ -342,6 +341,6 @@ function Users() {
           ) : null}
         </div>
       </div>
-    </div>
+   
   );
 }
