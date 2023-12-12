@@ -7,7 +7,8 @@ import Login from "../pages/Login/Login";
 import MyBooks from "../pages/MyBooks/MyBooks";
 import Profile from "../pages/Profile/Profile";
 import Registro from "../pages/Registro/Registro";
-
+import CRUDLibros from "../pages/Admin/CRUDLibros";
+import ELIMUsers from "../pages/Admin/ElimUsers";
 export const router = createBrowserRouter([
     {
         path:'/',
@@ -20,6 +21,14 @@ export const router = createBrowserRouter([
     {
         path: '/home',
         element: <Home />
+    },
+    {
+        path: '/AdminLibros',
+        element: <CRUDLibros />
+    },
+    {
+        path: '/AdminUsers',
+        element: <ELIMUsers />
     },
     {
         path:'/myprofile',
