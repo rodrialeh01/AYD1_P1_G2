@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./CRUDLibros.css";
 import Service from "../../Service/Service";
+import toast, { Toaster } from "react-hot-toast";
+
+
 export default function CRUDLibros() {
   const [books, setBooks] = useState([]);
   const [response, setResponse] = useState("");
@@ -51,7 +54,7 @@ function Libros(books, response, setResponse) {
   const [data, setData] = useState([]);
 
   const [libroData, setLibroData] = useState({
-    idBook: "",
+    _id: "",
     title: "",
     synopsis: "",
     purchasePrice: 0,
@@ -84,26 +87,134 @@ function Libros(books, response, setResponse) {
     });
   };
 
-  const openModal = async (opcion) => {
+  const handleCreate = async (event) => {
+    event.preventDefault();
+
+    try {
+      let res = await Service.createBook(libroData);
+      if (res.status === 200) {
+        console.log("Libro creado");
+        toast.success("Su libro ha sido creado.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setShowAgregar(false);
+        setTimeout(() => {
+          window.location.reload();
+          setResponse("guardar");
+        }, 750);
+      } else {
+        console.log("error");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleUpdate = async (event) => {
+    event.preventDefault();
+
+    try {
+      let res = await Service.updateBook(libroData._id, libroData);
+      if (res.status === 200) {
+        console.log("Libro actualizado");
+        toast.success("Su libro ha sido actualizado correctamente.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setShowActualizar(false);
+        setTimeout(() => {
+          window.location.reload();
+          setResponse("act");
+        }, 750);
+      }
+      else {
+        console.log("error");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleDelete = async (event) => {
+    event.preventDefault();
+
+    try {
+      let res = await Service.deleteBook(libroData._id);
+      if (res.status === 200) {
+        console.log("Libro eliminado");
+        toast.success("Su libro ha sido eliminado correctamente.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setShowEliminar(false);
+        setTimeout(() => {
+          window.location.reload();
+          setResponse("eli");
+        }, 750);
+      } else {
+        console.log("error");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+
+  const openModal = async (opcion, id) => {
     // 1 = Actualizar
     // 2 = Eliminar
     // 3 = Detalle
     // 4 = Agregar Libro
+    if (opcion != 4){
+    try {
+      let res = await Service.getBook(id);
+      if (res.status === 200) {
+        setLibroData(res.data.data);
+        console.log("DATA OBTENIDA: ", res.data.data);
+      } else {
+        console.log("error");
+      }
+
+    } catch (e) {
+      console.log(e);
+    }}
+
+    
 
     if (opcion === 1) {
       // Actualizar
+      console.log("id: ", id);
       setTitle("Actualizar Libro");
       setShowActualizar(true);
     } else if (opcion === 2) {
       // Eliminar
+      console.log("id: ", id);
       setTitle("Eliminar Libro");
       setShowEliminar(true);
     } else if (opcion === 3) {
       // Detalle
+      console.log("id: ", id);
       setTitle("Detalle Libro");
       setShowDetalle(true);
     } else if (opcion === 4) {
       // Agregar
+      console.log("id: ", id);
       setTitle("Agregar Libro");
       setShowAgregar(true);
     }
@@ -112,6 +223,7 @@ function Libros(books, response, setResponse) {
   return (
     <>
       <div class="flex h-screen">
+        < Toaster />
         <div class="m-auto content-center">
           <section className="flex items-end h-50 text-white p-8 ">
             <div class="md:flex md:items-center place-content-between ltr:ml-3 rtl:mr-3">
@@ -203,7 +315,7 @@ function Libros(books, response, setResponse) {
                     <td class=" text-center">
                       <button
                         class="bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-4 rounded "
-                        onClick={() => openModal(1)}
+                        onClick={() => openModal(1, value._id)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -225,7 +337,7 @@ function Libros(books, response, setResponse) {
                     <td class="px-6 py-4 text-right">
                       <button
                         class="bg-red-700 hover:bg-red-950 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => openModal(2)}
+                        onClick={() => openModal(2, value._id)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -247,7 +359,7 @@ function Libros(books, response, setResponse) {
                     <td class="px-6 py-4 text-right">
                       <button
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => openModal(3)}
+                        onClick={() => openModal(3, value._id)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -307,7 +419,9 @@ function Libros(books, response, setResponse) {
                     </div>
                     {/*body*/}
 
-                    <form>
+                    <form
+                      onSubmit={(e) => {handleUpdate(e)}}
+                    >
                       <div className="relative p-6 flex-auto">
                         <div class="w-full ">
                           <div class="md:flex md:items-center mb-6">
@@ -413,26 +527,7 @@ function Libros(books, response, setResponse) {
                                 ></input>
                               </div>
                             </div>
-                            <div class="md:flex md:items-center mb-6">
-                              <div class="">
-                                <label
-                                  class="block text-white font-bold md:text-left mb-1 md:mb-0 pr-4"
-                                  for="inline-full-name"
-                                >
-                                  Fecha de Retorno:
-                                </label>
-                              </div>
-                              <div class="w-full mr-[10px]">
-                                <input
-                                  class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                                  id="inline-full-name"
-                                  type="date"
-                                  name="returnDate"
-                                  defaultValue={libroData.returnDate}
-                                  onChange={handleInputChange}
-                                ></input>
-                              </div>
-                            </div>
+                           
                           </div>
 
                           <label
@@ -542,7 +637,9 @@ function Libros(books, response, setResponse) {
                         ?
                       </h1>{" "}
                     </div>
-                    <form className="justify-center flex">
+                    <form className="justify-center flex"
+                    onSubmit={(e) => {handleDelete(e)}}
+                    >
                       <button
                         type="submit"
                         className="text-white flex ml-4 bg-gradient-to-br from-red-900 to-red-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2"
@@ -625,6 +722,7 @@ function Libros(books, response, setResponse) {
                                 type="text"
                                 name="nombre"
                                 readOnly={true}
+                                defaultValue={libroData.title}
                               ></input>
                             </div>
                           </div>
@@ -644,6 +742,7 @@ function Libros(books, response, setResponse) {
                                 type="text"
                                 name="nombre"
                                 readOnly={true}
+                                defaultValue={libroData.author}
                               ></input>
                             </div>
                           </div>
@@ -664,6 +763,7 @@ function Libros(books, response, setResponse) {
                                 type="text"
                                 name="nombre"
                                 readOnly={true}
+                                defaultValue={libroData.editorial}
                               ></input>
                             </div>
                           </div>
@@ -685,6 +785,7 @@ function Libros(books, response, setResponse) {
                                   type="text"
                                   name="nombre"
                                   readOnly={true}
+                                  defaultValue={libroData.purchasePrice}
                                 ></input>
                               </div>
                             </div>
@@ -704,25 +805,7 @@ function Libros(books, response, setResponse) {
                                   type="text"
                                   name="nombre"
                                   readOnly={true}
-                                ></input>
-                              </div>
-                            </div>
-                            <div class="md:flex md:items-center mb-6">
-                              <div class="">
-                                <label
-                                  class="block text-white font-bold md:text-left mb-1 md:mb-0 pr-4"
-                                  for="inline-full-name"
-                                >
-                                  Fecha de Retorno:
-                                </label>
-                              </div>
-                              <div class="w-full mr-[10px]">
-                                <input
-                                  class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                                  id="inline-full-name"
-                                  type="date"
-                                  name="nombre"
-                                  readOnly={true}
+                                  defaultValue={libroData.rentalPrice}
                                 ></input>
                               </div>
                             </div>
@@ -743,6 +826,7 @@ function Libros(books, response, setResponse) {
                                 type="text"
                                 name="descripcion"
                                 readOnly={true}
+                                defaultValue={libroData.synopsis}
                               ></textarea>
                             </div>
                           </div>
@@ -805,7 +889,9 @@ function Libros(books, response, setResponse) {
                     </div>
                     {/*body*/}
 
-                    <form>
+                    <form 
+                    onSubmit={(e) => {handleCreate(e)}}
+                    >
                       <div className="relative p-6 flex-auto">
                         <div class="w-full ">
                           <div class="md:flex md:items-center mb-6">
@@ -906,25 +992,7 @@ function Libros(books, response, setResponse) {
                                 ></input>
                               </div>
                             </div>
-                            <div class="md:flex md:items-center mb-6">
-                              <div class="">
-                                <label
-                                  class="block text-white font-bold md:text-left mb-1 md:mb-0 pr-4"
-                                  for="inline-full-name"
-                                >
-                                  Fecha de Retorno:
-                                </label>
-                              </div>
-                              <div class="w-full mr-[10px]">
-                                <input
-                                  class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                                  id="inline-full-name"
-                                  type="date"
-                                  name="returnDate"
-                                  onChange={handleInputChange}
-                                ></input>
-                              </div>
-                            </div>
+                            
                           </div>
 
                           <label
