@@ -12,7 +12,7 @@ const EditProfile = () => {
     lastName: "",
     phone: "",
     email: "",
-    birthDay: "",
+    birthDate: "",
     password: "",
   });
 
@@ -40,36 +40,36 @@ const EditProfile = () => {
   }
 
   function parseDate2(inputDate) {
-    const date = new Date(inputDate);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString();
+    const parts = inputDate.split('/');
+    const jsDate = new Date(parts[2], parts[1] - 1, parts[0]);
+
+    const day = jsDate.getDate().toString().padStart(2, "0");
+    const month = (jsDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = jsDate.getFullYear().toString();
 
     return `${year}-${month}-${day}`;
-    }
+  }
 
   const handleEditar = async (event) => {
     event.preventDefault();
     try {
-    userDetails.birthDay = parseDate(userDetails.birthDay);
+      userDetails.birthDate = parseDate(userDetails.birthDate);
       const res = await Service.updateUser(usuario.id, userDetails);
-        if (res.status === 200) {
-            toast.success("Se ha actualizado su perfil de usuario correctamente.", {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              });
-              setShowEliminar(false);
-              setTimeout(() => {
-                window.location.reload();
-              }, 750);
-            navigate("/user/myprofile");
-        }
-
+      if (res.status === 200) {
+        toast.success("Se ha actualizado su perfil de usuario correctamente.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 750);
+        navigate("/user/myprofile");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -81,6 +81,7 @@ const EditProfile = () => {
       const res = await Service.getUser(data.id);
       if (res.status === 200) {
         setUserDetails(res.data.data);
+        res.data.data.birthDate = parseDate2(res.data.data.birthDate);
       }
     } catch (error) {
       console.log(error);
@@ -103,7 +104,9 @@ const EditProfile = () => {
         </div>
         <div class="flex items-center justify-center p-12">
           <div class="mx-auto w-full max-w-[550px]">
-            <form>
+            <form
+              onSubmit={(e) => { handleEditar(e); }}
+            >
               <div class="mb-5 pt-3">
                 <label class="mb-5 block text-base font-semibold text-white sm:text-xl">
                   Nombre Completo
@@ -211,9 +214,9 @@ const EditProfile = () => {
                 </label>
                 <input
                   type="date"
-                  name="birthDay"
-                  id="birthDay"
-                  defaultValue={parseDate2(userDetails.birthDay)}
+                  name="birthDate"
+                  id="birthDate"
+                  defaultValue={userDetails.birthDate}
                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
               </div>
@@ -238,3 +241,6 @@ const EditProfile = () => {
 };
 
 export default EditProfile;
+
+
+
