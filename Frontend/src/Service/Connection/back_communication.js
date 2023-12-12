@@ -96,6 +96,14 @@ export const deleteUser = async (id) => {
     return response;
 }
 
-
+// Editar un usuario
+export const updateUser = async (id, data) => {
+    const response = await instance.patch(`/user/update/${id}`, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
 
 
