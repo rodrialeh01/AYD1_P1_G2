@@ -67,7 +67,7 @@ const EditProfile = () => {
               setTimeout(() => {
                 window.location.reload();
               }, 750);
-            navigate("/myprofile");
+            navigate("/user/myprofile");
         }
 
     } catch (error) {
@@ -88,7 +88,7 @@ const EditProfile = () => {
   };
 
   const handlerRegresar = () => {
-    navigate("/myprofile");
+    navigate("/user/myprofile");
   };
   return (
     <div className="flex bg-zinc-900">
