@@ -17,7 +17,7 @@ export const signUp = async (req, res) => {
             lastName,
             phone,
             email,
-            birthDay,
+            birthDate: birthDay,
             password,
             role: 0,
         });

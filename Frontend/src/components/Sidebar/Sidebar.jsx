@@ -1,67 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaUserLarge, FaUserLargeSlash } from "react-icons/fa6";
 import { GiBookshelf } from "react-icons/gi";
 import { IoIosHome } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
 import { MdOutlineHistory } from "react-icons/md";
 import { PiBookBookmarkFill } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../../userCtx/User";
 
 const Sidebar = () => {
     const [open, setOpen] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const { logged, setLogged } = useUser();
+    useEffect(() => {
+        console.log(logged);
+        if (logged) {
+          const user = JSON.parse(localStorage.getItem("data_user"));
+          console.log(localStorage.getItem('data_user'));
+          setIsAdmin(user.rol == 1);
+        }
+    }, [logged]);
     const Menus = [
         {
             name: "Home",
             icon: <IoIosHome className="text-3xl"/>,
-            path: "/",
+            path: "/user/home",
         },
         {
             name: "Mis Libros",
             icon: <PiBookBookmarkFill className="text-3xl"/>,
-            path: "/",
+            path: "/user/mybooks",
         },
         {
             name: "Historial",
             icon: <MdOutlineHistory className="text-3xl"/>,
-            path: "/",
+            path: "/user/history",
         },
         {
             name: "Mi Perfil",
             icon: <FaUserLarge className="text-3xl"/>,
-            path: "/",
-        },
-        {
-            name: "Cerrar Sesión",
-            icon: <IoLogOut className="text-3xl"/>,
-            path: "/",
+            path: "/user/myprofile",
         }
     ]
     const MenuAdmin = [
         {
             name: "Home",
             icon: <IoIosHome className="text-3xl"/>,
-            path: "/",
+            path: "/user/home",
         },
         {
             name: "Administración de Libros",
             icon: <GiBookshelf className="text-3xl"/>,
-            path: "/",
+            path: "/user/AdminLibros",
         },
         {
             name: "Eliminar Usuarios",
             icon: <FaUserLargeSlash className="text-3xl"/>,
-            path: "/",
+            path: "/user/AdminUsers",
         },
         {
             name: "Mi Perfil",
             icon: <FaUserLarge className="text-3xl"/>,
-            path: "/",
-        },
-        {
-            name: "Cerrar Sesión",
-            icon: <IoLogOut className="text-3xl"/>,
-            path: "/",
+            path: "/user/myprofile",
         }
     ]
+    const navigate = useNavigate();
+
+    const handlerGoTo = (path) => {
+        navigate(path);
+    }
+
+    const handlerLogout = () => {
+        localStorage.removeItem("data_user");
+        setLogged(false);
+        navigate("/");
+    }
+
     return(
         <div className="flex">
             <div className={`${open ? 'w-72' : 'w-20'} duration-300 h-screen p-5 pt-8 bg-rojo2 relative`}>
@@ -88,12 +102,21 @@ const Sidebar = () => {
                   <h1 className={`text-white origin-left font-medium text-xl duration-300 ${!open && 'hidden'}`}>MyLibrary</h1>
                 </div>
                 <ul>
-                    {Menus.map((item, index) => (
-                        <li key={index} className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer pt-2 mt-2 pb-2 mb-2 hover:bg-rojo1 rounded-md`}>
+                    {isAdmin?MenuAdmin.map((item, index) => (
+                        <li key={index} className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer pt-2 mt-2 pb-2 mb-2 hover:bg-rojo1 rounded-md`} onClick={() => handlerGoTo(item.path)}>
+                            <div className={`${!open ? 'mr-4' : ''}`}>{item.icon}</div>
+                            <span className={`${!open && 'hidden'} origin-left duration-200`}>{item.name}</span>
+                        </li>
+                    )):Menus.map((item, index) => (
+                        <li key={index} className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer pt-2 mt-2 pb-2 mb-2 hover:bg-rojo1 rounded-md`} onClick={() => handlerGoTo(item.path)}>
                             <div className={`${!open ? 'mr-4' : ''}`}>{item.icon}</div>
                             <span className={`${!open && 'hidden'} origin-left duration-200`}>{item.name}</span>
                         </li>
                     ))}
+                    <li key={isAdmin?MenuAdmin.length:Menus.length} className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer pt-2 mt-2 pb-2 mb-2 hover:bg-rojo1 rounded-md`} onClick={handlerLogout}>
+                        <div className={`${!open ? 'mr-4' : ''}`}><IoLogOut className="text-3xl"/></div>
+                        <span className={`${!open && 'hidden'} origin-left duration-200`}>{"Cerrar Sesión"}</span>
+                    </li>
                 </ul>
             </div>
         </div>
