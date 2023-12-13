@@ -9,7 +9,7 @@ const RentCardBook = ({book}) => {
           {book.titulo}
         </h5>
         <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-          {book.sinopsis}
+          {book.synopsis}
         </p>
       </div>
       <div className="p-6 pt-0 flex flex-col sm:flex-row justify-center sm:justify-between items-center">
