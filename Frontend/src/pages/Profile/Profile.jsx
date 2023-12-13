@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaUserLarge } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../../components/Sidebar/Sidebar";
 import Service from "../../Service/Service";
+import Sidebar from "../../components/Sidebar/Sidebar";
 const Profile = () => {
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ const Profile = () => {
 
     obtenerUsuario();
   }, []);
-
+  console.log(userDetails.password)
   const obtenerUsuario = async () => {
     try {
       const data = JSON.parse(localStorage.getItem("data_user"));
@@ -105,15 +105,6 @@ const Profile = () => {
                 <h2 className="text-4xl text-white font-light">
                     {userDetails.email}
                 </h2>
-              </div>
-              <div class="mb-5">
-                <label
-                  for="name"
-                  class="mb-3 block text-base font-medium text-white"
-                >
-                  Contraseña
-                </label>
-                <h2 className="text-4xl text-white font-light">********</h2>
               </div>
 
               <div class="mb-5">
