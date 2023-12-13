@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaHistory } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import Service from "../../Service/Service";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { useUser } from "../../userCtx/User";
 const History = () => {
     const navigate = useNavigate();
-
-    const handlerEdit = () => {
-        navigate("/editprofile");
-    }
+    const [nombre, setNombre] = useState('');
+    const { logged } = useUser();
+    useEffect(() => {
+        if(!logged){
+            navigate("/")
+        }
+        const user = JSON.parse(localStorage.getItem("data_user"));
+        Service.getUser(user.id)
+        .then((res) => {
+            setNombre(res.data.data.name + " " + res.data.data.lastName);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
     return (
         <div className="flex bg-zinc-900">
             <Sidebar />
@@ -26,7 +39,7 @@ const History = () => {
                                 <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
                                 <h3 class="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
                                     <span class="mr-3 font-semibold text-dark">Mi historial de transacciones</span>
-                                    <span class="mt-1 font-medium text-secondary-dark text-lg/normal">Nombre del Usuario</span>
+                                    <span class="mt-1 font-medium text-secondary-dark text-lg/normal">{nombre}</span>
                                 </h3>
                                 </div>
                                 <div class="flex-auto block py-8 pt-6 px-9">
@@ -44,7 +57,7 @@ const History = () => {
                                         <td class="p-3 pl-0">
                                             <div class="flex items-center">
                                             <div class="relative inline-block shrink-0 rounded-2xl me-3">
-                                                <img src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/riva-dashboard-tailwind/img/img-49-new.jpg" class="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt=""/>
+                                                <img src="https://cdn.icon-icons.com/icons2/41/PNG/128/redBook_7072.png" class="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt=""/>
                                             </div>
                                             <div class="flex flex-col justify-start">
                                                 <a href="javascript:void(0)" class="mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-primary"> El Principito </a>

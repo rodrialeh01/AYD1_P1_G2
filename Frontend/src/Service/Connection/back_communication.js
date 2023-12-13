@@ -106,4 +106,8 @@ export const updateUser = async (id, data) => {
     return response;
 }
 
-
+//Obtener los libros de un usuario
+export const getBooksByUser = async (id) => {
+    const response = await instance.get(`/user/Books/${id}`);
+    return response;
+}
