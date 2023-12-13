@@ -16,7 +16,7 @@ const Profile = () => {
     lastName: "",
     phone: "",
     email: "",
-    birthDay: "",
+    birthDate: "",
     password: "",
   });
   useEffect(() => {
@@ -123,7 +123,7 @@ const Profile = () => {
                 >
                   Fecha de Nacimiento
                 </label>
-                <h2 className="text-4xl text-white font-light">{userDetails.birthDay}</h2>
+                <h2 className="text-4xl text-white font-light">{userDetails.birthDate}</h2>
               </div>
 
               <div>
