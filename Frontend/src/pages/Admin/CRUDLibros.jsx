@@ -78,6 +78,7 @@ function Libros(books, response, setResponse) {
     author: "",
     editorial: "",
     bookState: 0,
+    publicationDate: "",
   });
 
   const obtenerDatos = async () => {
@@ -539,6 +540,26 @@ function Libros(books, response, setResponse) {
                               ></input>
                             </div>
                           </div>
+                          <div class="md:flex md:items-center mb-6">
+                            <div class="">
+                              <label
+                                class="block text-white font-bold md:text-left mb-1 md:mb-0 pr-4"
+                                for="inline-full-name"
+                              >
+                                Año publicación:
+                              </label>
+                            </div>
+                            <div class="w-full mr-[50px]">
+                              <input
+                                class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                id="inline-full-name"
+                                type="text"
+                                name="publicationDate"
+                                defaultValue={libroData.publicationDate}
+                                onChange={handleInputChange}
+                              ></input>
+                            </div>
+                          </div>
                         </div>
 
                         <label
@@ -823,6 +844,26 @@ function Libros(books, response, setResponse) {
                               ></input>
                             </div>
                           </div>
+                          <div class="md:flex md:items-center mb-6">
+                            <div class="">
+                              <label
+                                class="block text-white font-bold md:text-left mb-1 md:mb-0 pr-4"
+                                for="inline-full-name"
+                              >
+                                Año publicación:
+                              </label>
+                            </div>
+                            <div class="w-full mr-[50px]">
+                              <input
+                                class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                id="inline-full-name"
+                                type="text"
+                                name="publicationDate"
+                                defaultValue={libroData.publicationDate}
+                                readOnly={true}
+                              ></input>
+                            </div>
+                          </div>
                         </div>
 
                         <label
@@ -1004,6 +1045,25 @@ function Libros(books, response, setResponse) {
                                 id="inline-full-name"
                                 type="text"
                                 name="rentalPrice"
+                                onChange={handleInputChange}
+                              ></input>
+                            </div>
+                          </div>
+                          <div class="md:flex md:items-center mb-6">
+                            <div class="">
+                              <label
+                                class="block text-white font-bold md:text-left mb-1 md:mb-0 pr-4"
+                                for="inline-full-name"
+                              >
+                                Año publicación:
+                              </label>
+                            </div>
+                            <div class="w-full mr-[50px]">
+                              <input
+                                class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                id="inline-full-name"
+                                type="text"
+                                name="publicationDate"
                                 onChange={handleInputChange}
                               ></input>
                             </div>
