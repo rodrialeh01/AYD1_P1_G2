@@ -20,19 +20,9 @@ export const updateInfoUser = async (req, res) => {
     try
     {
         const { id } = req.params;
-        const { name, lastName, phone, newEmail, actualEmail, birthDay, password } = req.body;
+        const { name, lastName, phone, birthDay, password } = req.body;
 
-        if(newEmail !== actualEmail){
-
-            const isRegistered = await User.findOne({ email: newEmail }, { email: 1 });
-            
-            if (isRegistered) {
-                res.response(null, 'User already registered', 400);
-                return;
-            }
-        }
-
-        await User.updateOne({ _id: id }, { name, lastName, phone, email: newEmail, birthDay, password });
+        await User.updateOne({ _id: id }, { name, lastName, phone, birthDate: birthDay, password });
 
         const userUpdated = await User.findOne({ _id: id }, { __v: 0, password: 0 });
 
