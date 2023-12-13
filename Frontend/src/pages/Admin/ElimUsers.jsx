@@ -1,23 +1,48 @@
 import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import Service from "../../Service/Service";
+import Sidebar from "../../components/Sidebar/Sidebar";
 import "./ELIMUsers.css";
 
 export default function ELIMUsers() {
+  const usuario = JSON.parse(localStorage.getItem("data_user"));
   const [users, setUsers] = useState([]);
   const [response, setResponse] = useState("");
 
   useEffect(() => {
+    if (usuario.rol !== 1) {
+      toast.error("No tienes permiso para acceder a esta página.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 1000);
+    }
+
     const obtData = async () => {
       try {
-        /*let response = await Service.listarUsers();
-            if (response.status === 200){
-                setData(response.data);
-            }*/
+        let res = await Service.getUsers();
+        if (res.status === 200) {
+          setUsers(res.data.data);
+          console.log("xd: ", res.data.data);
+        }
       } catch (e) {
         console.log(e);
       }
     };
-    obtData();
-  }, []);
+    if (usuario.rol === 1) {
+      obtData();
+    }
+    setTimeout(() => {}, 500);
+
+    setResponse("r");
+  }, [response]);
 
   return (
     <div class="h-full w-full overflow-y-auto bg-gradient-to-t from-rojo4 to-rojo2 scrollbar-hide">
@@ -27,25 +52,31 @@ export default function ELIMUsers() {
 }
 
 function Users() {
+  const usuario = JSON.parse(localStorage.getItem("data_user"));
   const [showEliminar, setShowEliminar] = useState(false);
-
-  const [idUser, setIdBook] = useState("");
-
+  const [idUser, setIdUser] = useState("");
   const [title, setTitle] = useState("");
+  const [data, setData] = useState([]);
 
-  const [data, setData] = useState([
-    {
-      _id: "6574da2ac9670c794d2878e1",
-      name: "Andrea",
-      lastName: "Cabrera",
-      phone: "12345678",
-      email: "correo@gmail.com",
-      birthDate: "09/07/2001",
-      role: 0,
-      rentedBooks: [],
-      purchasedBooks: [],
-    },
-  ]);
+  useEffect(() => {
+    if (usuario.rol === 1) {
+      obtenerDatos();
+    }
+  }, []);
+
+  const obtenerDatos = async () => {
+    try {
+      let res = await Service.getUsers();
+      if (res.status === 200) {
+        setData(res.data.data);
+        console.log("xd: ", res.data.data);
+      } else {
+        console.log("error");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const [userData, setUserData] = useState({
     _id: "",
@@ -59,8 +90,20 @@ function Users() {
     purchasedBooks: [],
   });
 
-  const openModal = async (opcion) => {
+  const openModal = async (opcion, id) => {
     // 1 = Eliminar
+    try {
+      let res = await Service.getUser(id);
+      if (res.status === 200) {
+        setUserData(res.data.data);
+        setIdUser(id);
+      } else {
+        console.log("error");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
     if (opcion === 1) {
       // Eliminar
       setTitle("Eliminar Usuario");
@@ -68,9 +111,69 @@ function Users() {
     }
   };
 
+  const handleEliminar = async (e) => {
+    e.preventDefault();
+    try {
+      if (userData.role === 1) {
+        toast.error("No se puede eliminar un administrador.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setShowEliminar(false);
+        setTimeout(() => {
+          window.location.reload();
+          setResponse("eli");
+        }, 750);
+        return;
+      }
+
+      let res = await Service.deleteUser(idUser);
+      if (res.status === 200) {
+        toast.success("El usuario ha sido eliminado correctamente.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
+        setShowEliminar(false);
+        setTimeout(() => {
+          window.location.reload();
+          setResponse("eli");
+        }, 750);
+      } else {
+        toast.error("Error al eliminar usuario");
+      }
+    } catch (e) {
+      toast.error("El usuario no ha podido ser eliminado.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      setShowEliminar(false);
+      setTimeout(() => {
+        window.location.reload();
+        setResponse("eli");
+      }, 750);
+    }
+  };
+
   return (
-    <>
-      <div class="flex h-screen">
+      <div class="flex h-screen ">
+        <Toaster />
+        <Sidebar />
         <div class="m-auto content-center">
           <section className="flex items-end h-50 text-white p-8 ">
             <div class="md:flex md:items-center place-content-between ltr:ml-3 rtl:mr-3">
@@ -91,8 +194,6 @@ function Users() {
                   d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
                 />
               </svg>
-
-              
             </div>
           </section>
           <div class=" bg-gradient-to-t from-gris3 to-gris2 relative shadow-md sm:rounded-lg overflow-hidden">
@@ -120,9 +221,6 @@ function Users() {
                     Correo
                   </th>
                   <th scope="col" class="px-6 py-3">
-                    Fecha de Nacimiento
-                  </th>
-                  <th scope="col" class="px-6 py-3">
                     Eliminar
                   </th>
                 </tr>
@@ -139,11 +237,10 @@ function Users() {
 
                     <td class="px-6 py-4">{value.phone}</td>
                     <td class="px-6 py-4">{value.email}</td>
-                    <td class="px-6 py-4">{value.birthDate}</td>
                     <td class="px-6 py-4 text-right">
                       <button
                         class="bg-red-700 hover:bg-red-950 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => openModal(1)}
+                        onClick={() => openModal(1, value._id)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -211,7 +308,10 @@ function Users() {
                         ?
                       </h1>{" "}
                     </div>
-                    <form className="justify-center flex">
+                    <form
+                      className="justify-center flex"
+                      onSubmit={(e) => handleEliminar(e)}
+                    >
                       <button
                         type="submit"
                         className="text-white flex ml-4 bg-gradient-to-br from-red-900 to-red-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2"
@@ -241,6 +341,6 @@ function Users() {
           ) : null}
         </div>
       </div>
-    </>
+   
   );
 }

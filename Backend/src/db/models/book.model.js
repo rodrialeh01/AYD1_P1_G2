@@ -6,6 +6,7 @@ const bookSchema = new Schema({
     purchasePrice: Number,
     rentalPrice: Number,
     returnDate: Date,
+    yearDate: Number,
     author: String,
     editorial: String,
     bookState: Number

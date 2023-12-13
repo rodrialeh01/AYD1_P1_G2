@@ -78,6 +78,32 @@ export const deleteBook = async (id) => {
     return response;
 }
 
+// Obtener los usuarios
+export const getUsers = async () => {
+    const response = await instance.get('/user/users');
+    return response;
+}
 
+// Obtener un usuario
+export const getUser = async (id) => {
+    const response = await instance.get(`/user/${id}`);
+    return response;
+}
+
+// Eliminar un usuario
+export const deleteUser = async (id) => {
+    const response = await instance.delete(`/user/delete/${id}`);
+    return response;
+}
+
+// Editar un usuario
+export const updateUser = async (id, data) => {
+    const response = await instance.patch(`/user/update/${id}`, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
 
 

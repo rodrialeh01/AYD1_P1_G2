@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../../userCtx/User";
 import toast, { Toaster } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import Service from "../../Service/Service";
+import { useUser } from "../../userCtx/User";
 
 import "./Login.css";
 function Login() {
@@ -14,7 +14,9 @@ function Login() {
   useEffect(() => {
     console.log(logged);
     if (logged) {
-      navigate("/home");
+      navigate("/user/home");
+    } else {
+      navigate("/");
     }
   }, [logged]);
 
@@ -26,14 +28,15 @@ function Login() {
     try {
       console.log(data);
       const res = await Service.login(data);
-      console.log(res);
+      console.log(res.data.data);
       console.log("xd");
       if (res.status === 200) {
         const savedData = {
-          id: res.data._id,
-          rol: res.data.rol
+          id: res.data.data._id,
+          rol: res.data.data.role
         }
-
+        console.log("ESTO ES LO QUE SE GUARDA:")
+        console.log(savedData);
         localStorage.setItem("data_user", JSON.stringify(savedData));
         
         setLogged(true);
@@ -47,7 +50,7 @@ function Login() {
           progress: undefined,
         });
         setTimeout(() => {
-          navigate("/home");
+          navigate("/user/home");
         }
         , 3000);
 

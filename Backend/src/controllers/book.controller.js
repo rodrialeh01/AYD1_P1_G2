@@ -6,7 +6,7 @@ import { User } from '../db/models/user.model.js';
 export const createBook = async (req, res) => {
         
     try {
-        const { title, synopsis, purchasePrice, rentalPrice, author, editorial } = req.body;
+        const { title, synopsis, purchasePrice, rentalPrice, author, editorial, yearDate } = req.body;
         
         
         const newBook = new Book({
@@ -16,6 +16,7 @@ export const createBook = async (req, res) => {
             rentalPrice,
             author,
             editorial,
+            yearDate,
             bookState: bookState.AVAILABLE
         });
 
@@ -70,7 +71,7 @@ export const updateBookByID = async (req, res) => {
         
     try {
         const { id } = req.params;
-        const { title, synopsis, purchasePrice, rentalPrice, author, editorial } = req.body;
+        const { title, synopsis, purchasePrice, rentalPrice, author, editorial, yearDate } = req.body;
 
         const isRegistered = await Book.findOne({ _id: id }, { title: 1 });
 
@@ -79,7 +80,7 @@ export const updateBookByID = async (req, res) => {
             return;
         }
 
-        await Book.updateOne({ _id: id }, { title, synopsis, purchasePrice, rentalPrice, author, editorial });
+        await Book.updateOne({ _id: id }, { title, synopsis, purchasePrice, rentalPrice, author, editorial, yearDate });
 
         res.response(null, 'Book updated successfully', 200);
 
