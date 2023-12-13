@@ -93,7 +93,7 @@ const History = () => {
                                                 </td>
                                                 <td class="p-3 pr-12 text-end">
                                                     {console.log(transaction.bookState)}
-                                                    <span class={`text-center align-baseline inline-flex px-4 py-3 mr-auto items-center font-semibold text-[.95rem] leading-none ${transaction.bookState===0?'text-primary bg-primary-light':transaction.bookState===1?'text-warning bg-warning-light':'text-success bg-success-light'} rounded-lg`}> {tipoTransaccion[transaction.bookState-1]} </span>
+                                                    <span class={`text-center align-baseline inline-flex px-4 py-3 mr-auto items-center font-semibold text-[.95rem] leading-none ${transaction.bookState===1?'text-primary bg-primary-light':transaction.bookState===2?'text-warning bg-warning-light':'text-success bg-success-light'} rounded-lg`}> {tipoTransaccion[transaction.bookState-1]} </span>
                                                 </td>
                                                 <td class="p-3 pr-0 text-end">
                                                     <span class="font-semibold text-light-inverse text-md/normal">{formatearFechaHora(transaction.createdAt)}</span>
