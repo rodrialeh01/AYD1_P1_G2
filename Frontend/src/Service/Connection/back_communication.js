@@ -106,4 +106,30 @@ export const updateUser = async (id, data) => {
     return response;
 }
 
+//Obtener los libros de un usuario
+export const getBooksByUser = async (id) => {
+    const response = await instance.get(`/user/Books/${id}`);
+    return response;
+}
 
+// Obtener Comentarios 
+export const getComments = async (id) => {
+    const response = await instance.get(`/comment/${id}`);
+    return response;
+}
+
+// Crear un comentario
+export const createComment = async (data) => {
+    const response = await instance.post('/comment/create', data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+// Eliminar un comentario
+export const deleteComment = async (id) => {
+    const response = await instance.delete(`/comment/delete/${id}`);
+    return response;
+}

@@ -6,17 +6,10 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import { useUser } from "../../userCtx/User";
 const Home = () => {
   const navigate = useNavigate();
-  const arrayprueba = [
-    {titulo:"titulo1", sinopsis:"sinopsis1", renta:100, compra:200},
-    {titulo:"titulo2", sinopsis:"sinopsis2", renta:100, compra:200},
-    {titulo:"titulo3", sinopsis:"sinopsis3", renta:100, compra:200},
-    {titulo:"titulo4", sinopsis:"sinopsis4", renta:100, compra:200},
-    {titulo:"titulo5", sinopsis:"sinopsis5", renta:100, compra:200},
-    {titulo:"titulo6", sinopsis:"sinopsis6", renta:100, compra:200},
-  ]
   const [titulo, setTitulo] = useState('')
   const [isAdmin, setIsAdmin] = useState(false);
   const { logged, setLogged } = useUser();
+  const [books, setBooks] = useState([]);
   useEffect(() => {
     if (!logged) {
       navigate("/")
@@ -37,9 +30,12 @@ const Home = () => {
       }
     });
 
-    
+    Service.getBooks().then((res) => {
+      console.log(res);
+      setBooks(res.data.data.filter(libro => libro.bookState !== 2));
+    });
   }, [])
-
+    console.log(books)
     return(
         <div className="flex bg-zinc-900">
             <Sidebar />
@@ -63,7 +59,7 @@ const Home = () => {
                   Catálogo de Libros
                 </h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {arrayprueba.map((book, index) => (
+                {books.map((book, index) => (
                   <BookCard key={index} book={book} rol={isAdmin} />
                 ))}
                 </div>

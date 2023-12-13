@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Service from "../../Service/Service";
 import MyCardBook from "../../components/MyCardBook/MyCardBook";
 import RentCardBook from "../../components/RentCardBook/RentCardBook";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { useUser } from "../../userCtx/User";
 const MyBooks = () => {
-    const arrayprueba = [
-        {titulo:"titulo1", sinopsis:"sinopsis1", renta:100, compra:200},
-        {titulo:"titulo2", sinopsis:"sinopsis2", renta:100, compra:200},
-        {titulo:"titulo3", sinopsis:"sinopsis3", renta:100, compra:200},
-        {titulo:"titulo4", sinopsis:"sinopsis4", renta:100, compra:200},
-        {titulo:"titulo5", sinopsis:"sinopsis5", renta:100, compra:200},
-        {titulo:"titulo6", sinopsis:"sinopsis6", renta:100, compra:200},
-    ]
+    const { logged } = useUser();
+    const navigate = useNavigate();
+    const [librosComprados, setLibrosComprados] = useState([]);
+    const [librosAlquilados, setLibrosAlquilados] = useState([]);
+    useEffect(() => {
+        if(!logged){
+            navigate("/")
+        }
+        const user = JSON.parse(localStorage.getItem("data_user"));
+        Service.getBooksByUser(user.id)
+        .then((res) => {
+            setLibrosAlquilados(res.data.data.filter(libro => libro.bookState === 1));
+            setLibrosComprados(res.data.data.filter(libro => libro.bookState === 2));
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
     return (
         <div className="flex bg-zinc-900">
             <Sidebar />
@@ -37,15 +50,32 @@ const MyBooks = () => {
                 <div className="pt-4">
                     <h2 className="text-white text-2xl">Alquilados</h2>
                     <div id="cartas" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {arrayprueba.map((book, index) => (
+                        {librosAlquilados.length===0?
+                        <div className="flex items-center x-screen justify-center">
+                            <div className="max-w-md w-full p-6 rounded-md shadow-md">
+                                <p className="text-2xl text-center text-white">No tienes libros alquilados :c</p>
+                                <img className="mx-auto mt-4" src="http://imgfz.com/i/j5mwYls.png" alt="Emoji triste"/>
+                            </div>
+                        </div>
+                        :
+                        librosAlquilados.map((book, index) => (
                             <RentCardBook key={index} book={book} />
                         ))}
+                        
                     </div>
                 </div>
                 <div className="pt-4">
                     <h2 className="text-white text-2xl">De mi propiedad</h2>
                     <div id="cartas" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {arrayprueba.map((book, index) => (
+                        {librosComprados.length===0?
+                        <div className="flex items-center x-screen justify-center">
+                            <div className="max-w-md w-full p-6 rounded-md shadow-md">
+                                <p className="text-2xl text-center text-white">No tienes libros Comprados :c</p>
+                                <img className="mx-auto mt-4" src="http://imgfz.com/i/j5mwYls.png" alt="Emoji triste"/>
+                            </div>
+                        </div>
+                        :
+                        librosComprados.map((book, index) => (
                             <MyCardBook key={index} book={book} />
                         ))}
                     </div>
