@@ -31,11 +31,33 @@ function Registro() {
     return `${day}/${month}/${year}`;
   }
 
+  const validPassword = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    return regex.test(password);
+  };
+
   const submitRegister = async (e) => {
     e.preventDefault();
     try {
       account.birthDay = parseDate(account.birthDay);
       console.log(account.birthDay);
+
+      if (!validPassword(account.password)) {
+        toast.error(
+          "Error al registrar - La contraseña debe tener mínimo 8 caracteres, una mayúscula y un número.",
+          {
+            position: "upper-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+        return;
+      }
+      
       const res = await Service.registro(account);
       console.log("esta es la respuesta:");
       console.log(res);
