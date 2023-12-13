@@ -6,14 +6,6 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import { useUser } from "../../userCtx/User";
 const Home = () => {
   const navigate = useNavigate();
-  const arrayprueba = [
-    {titulo:"titulo1", sinopsis:"sinopsis1", renta:100, compra:200},
-    {titulo:"titulo2", sinopsis:"sinopsis2", renta:100, compra:200},
-    {titulo:"titulo3", sinopsis:"sinopsis3", renta:100, compra:200},
-    {titulo:"titulo4", sinopsis:"sinopsis4", renta:100, compra:200},
-    {titulo:"titulo5", sinopsis:"sinopsis5", renta:100, compra:200},
-    {titulo:"titulo6", sinopsis:"sinopsis6", renta:100, compra:200},
-  ]
   const [titulo, setTitulo] = useState('')
   const [isAdmin, setIsAdmin] = useState(false);
   const { logged, setLogged } = useUser();

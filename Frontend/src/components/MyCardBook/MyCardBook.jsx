@@ -6,7 +6,17 @@ const MyCardBook = ({book}) => {
         <h5 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
           {book.title}
         </h5>
+        <p className="block font-sans text-base antialiased font-semibold leading-relaxed text-inherit">
+          Autor:  <span className="font-light">{book.author}</span>
+        </p>
+        <p className="block font-sans text-base antialiased font-semibold leading-relaxed text-inherit">
+          Editorial:  <span className="font-light">{book.editorial}</span>
+        </p>
+        <p className="block font-sans text-base antialiased font-semibold leading-relaxed text-inherit">
+          Año de Publicación:  <span className="font-light">{book.yearDate}</span>
+        </p>
         <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+          <span className="font-semibold">Synopsis:</span><br />
           {book.synopsis}
         </p>
       </div>

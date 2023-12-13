@@ -106,4 +106,76 @@ export const updateUser = async (id, data) => {
     return response;
 }
 
+//Obtener los libros de un usuario
+export const getBooksByUser = async (id) => {
+    const response = await instance.get(`/user/Books/${id}`);
+    return response;
+}
 
+// Obtener Comentarios 
+export const getComments = async (id) => {
+    const response = await instance.get(`/comment/${id}`);
+    return response;
+}
+
+// Crear un comentario
+export const createComment = async (data) => {
+    const response = await instance.post('/comment/create', data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+// Eliminar un comentario
+export const deleteComment = async (id) => {
+    const response = await instance.delete(`/comment/delete/${id}`);
+    return response;
+}
+
+// Comprar un libro
+export const buyBook = async (data) => {
+    const response = await instance.post(`/book/buyBook`, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+// Alquilar un libro
+export const rentBook = async (data) => {
+    const response = await instance.post(`/book/rentBook`, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+// Devolver un libro
+export const returnBook = async (data) => {
+    const response = await instance.post(`/book/returnBook`, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+//Agregar al historial
+export const addHistory = async (data) => {
+    const response = await instance.post('/history/set', data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+// Obtener el historial de un usuario
+export const getHistory = async (id) => {
+    const response = await instance.get(`/history/${id}`);
+    return response;
+}

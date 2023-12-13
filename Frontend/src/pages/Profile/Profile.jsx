@@ -119,7 +119,7 @@ const Profile = () => {
 
               <div>
                 <button
-                  class="hover:shadow-form w-full rounded-md bg-rojo2 py-3 px-8 text-center text-base font-semibold text-white outline-none"
+                  className={`hover:shadow-form w-full rounded-md bg-rojo2 py-3 px-8 text-center text-base font-semibold text-white outline-none ${usuario.rol ===1?'hidden':'' }`}
                   onClick={handlerEdit}
                 >
                   Editar
