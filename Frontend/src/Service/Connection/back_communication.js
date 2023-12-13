@@ -46,6 +46,12 @@ export const getBooks = async () => {
     return response;
 }
 
+// Obtener todos los libros
+export const getAllBooks = async () => {
+    const response = await instance.get('/book/getAllBooks');
+    return response;
+}
+
 // Obtener un libro
 export const getBook = async (id) => {
     const response = await instance.get(`/book/${id}`);
