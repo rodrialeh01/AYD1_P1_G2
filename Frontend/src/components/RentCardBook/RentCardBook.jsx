@@ -6,10 +6,13 @@ const RentCardBook = ({book}) => {
     <div className="relative flex flex-col mt-6 text-white bg-red-900 shadow-md bg-clip-border rounded-xl max-w-full sm:max-w-96 p-4">
       <div className="p-6">
         <h5 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-          {book.titulo}
+          {book.title}
         </h5>
         <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
           {book.synopsis}
+        </p>
+        <p className="block font-sans text-base antialiased font-semibold leading-relaxed text-inherit">
+          Fecha de devolución:  <span className="font-light">{book.returnDate}</span>
         </p>
       </div>
       <div className="p-6 pt-0 flex flex-col sm:flex-row justify-center sm:justify-between items-center">

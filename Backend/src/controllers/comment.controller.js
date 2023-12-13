@@ -43,7 +43,7 @@ export const getCommentsByBookId = async (req, res) => {
 
         const comments = await Comment.find({ idBook: id }, { __v: 0 });
 
-        if (!comments) {
+        if (!comments.length) {
             res.response(null, 'Comments not found', 400);
             return;
         }
