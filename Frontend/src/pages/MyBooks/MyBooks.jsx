@@ -17,8 +17,8 @@ const MyBooks = () => {
         const user = JSON.parse(localStorage.getItem("data_user"));
         Service.getBooksByUser(user.id)
         .then((res) => {
-            setLibrosAlquilados(res.data.data.filter(libro => libro.bookState === 1));
-            setLibrosComprados(res.data.data.filter(libro => libro.bookState === 2));
+            setLibrosAlquilados(res.data.data.rentedBooks);
+            setLibrosComprados(res.data.data.purchasedBooks);
         })
         .catch((err) => {
             console.log(err);

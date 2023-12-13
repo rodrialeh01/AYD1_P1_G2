@@ -16,6 +16,7 @@ const MyCardBook = ({book}) => {
           Año de Publicación:  <span className="font-light">{book.yearDate}</span>
         </p>
         <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+          <span className="font-semibold">Synopsis:</span><br />
           {book.synopsis}
         </p>
       </div>
