@@ -32,6 +32,10 @@ En este apartado se encuentra las grabaciones del desarrollo de los sprints a lo
 
 [Link de la carpeta de los sprints del proyecto](https://drive.google.com/drive/folders/1M3uXQ7G3BFGp8JHneZMErmo0loB-Db1O?usp=sharing)
 
+## Modelo entidad relación
+<div align="center"><img src="./imgs/database.png"/></div>
+
+
 ## Diagrama de caso de uso
 <div align="center"><img src="./imgs/Diagrama.png"/></div>
 
