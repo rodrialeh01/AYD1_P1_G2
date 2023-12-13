@@ -63,7 +63,7 @@ export const router = createBrowserRouter([
                 element: <History/>
             },
             {
-                path: 'book/:id_book',
+                path: 'book/:id',
                 element: <Book />
             }
         ]
