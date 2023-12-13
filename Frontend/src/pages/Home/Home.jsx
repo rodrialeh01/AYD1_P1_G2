@@ -17,6 +17,7 @@ const Home = () => {
   const [titulo, setTitulo] = useState('')
   const [isAdmin, setIsAdmin] = useState(false);
   const { logged, setLogged } = useUser();
+  const [books, setBooks] = useState([]);
   useEffect(() => {
     if (!logged) {
       navigate("/")
@@ -37,9 +38,12 @@ const Home = () => {
       }
     });
 
-    
+    Service.getBooks().then((res) => {
+      console.log(res);
+      setBooks(res.data.data.filter(libro => libro.bookState !== 2));
+    });
   }, [])
-
+    console.log(books)
     return(
         <div className="flex bg-zinc-900">
             <Sidebar />
@@ -63,7 +67,7 @@ const Home = () => {
                   Catálogo de Libros
                 </h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {arrayprueba.map((book, index) => (
+                {books.map((book, index) => (
                   <BookCard key={index} book={book} rol={isAdmin} />
                 ))}
                 </div>

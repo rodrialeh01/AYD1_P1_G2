@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaBookReader } from "react-icons/fa";
 import { MdOutlineAddShoppingCart, MdOutlineSell } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
+import Service from "../../Service/Service";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { Desencriptar } from "../../utils/main";
 const Book = () => {
     const navigate = useNavigate();
+    const { id_book } = useParams();
+    const [bookDetails, setBookDetails] = useState(null);
 
-    const handlerEdit = () => {
-        navigate("/editprofile");
-    }
+    useEffect(() => {
+        const idbook = Desencriptar(id_book);
+        console.log("IDBOOK")
+        console.log(idbook);
+        Service.getBook(idbook).then((res) => {
+            console.log("RES")
+            console.log(res);
+            if (res.status === 200) {
+                setBookDetails(res.data.data);
+            }
+        });
+    }, []);
+    console.log(bookDetails)
     return (
         <div className="flex bg-zinc-900">
             <Sidebar />
@@ -21,9 +35,9 @@ const Book = () => {
                 </div>
                 <div class="max-w-2xl mx-auto my-10 bg-white rounded-lg shadow-md p-5">
                     <img class=" w-40 h-40 rounded-full mx-auto" src="https://i.postimg.cc/4xRKZVBJ/pila-libros-ilustracion-diseno-plano-556708-2364.jpg" alt="Profile picture"/>
-                    <h2 class="text-center text-2xl font-semibold mt-3">Book Name</h2>
-                    <p class="text-center mt-1 text-xl">Autor</p>
-                    <p class="text-left mt-1 text-xl">Año de Publicación: 2012</p>
+                    <h2 class="text-center text-2xl font-semibold mt-3">{"bookDetails.title"}</h2>
+                    <p class="text-center mt-1 text-xl">{"bookDetails.author"}</p>
+                    <p class="text-left mt-1 text-xl">{"2023"}</p>
                     <p class="text-left mt-1 text-xl">Editorial: Santillana</p>
                     <p class="text-left text-gray-600 mt-1 text-xl">Precio de Venta: Q10.00</p>
                     <p class="text-left text-gray-600 mt-1 text-xl">Precio de Renta: Q10.00</p>
