@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { FaBookReader } from "react-icons/fa";
 import { MdOutlineAddShoppingCart, MdOutlineSell } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import Service from "../../Service/Service";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { Desencriptar } from "../../utils/main";
-import toast, { Toaster } from "react-hot-toast";
 
 const Book = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [fechaDevolucion, setFechaDevolucion] = useState("");
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [editorial, setEditorial] = useState("");
@@ -19,14 +22,32 @@ const Book = () => {
   const [comments, setComments] = useState([]);
   const { id } = useParams();
   const [response, setResponse] = useState(null);
-
+  const id_user = JSON.parse(localStorage.getItem("data_user")).id;
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     idBook: "",
     idUser: "",
     comment: "",
   });
+
+  const parseDate = (inputDate) => {
+    const fecha = new Date(`${inputDate}T23:59:59.000Z`);
+    return fecha.toISOString();
+  };
+
+  const handleRentModal = () => {
+    setModalOpen(true);
+  }
+  const handleDateChange = (e) => {
+    if(e.target.value){
+      setFechaDevolucion(e.target.value);
+    }
+  };
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   const handleInputChange = (e) => {
     setData({
@@ -105,6 +126,54 @@ const Book = () => {
     }
   };
 
+  const handleBuy = () => {
+    const idbook = Desencriptar(id);
+    console.log("Comprar");
+    Swal.fire({
+      title: "¿Estas seguro de comprarlo?",
+      text: "Vas a comprar el libro de " + title + " por Q" + purchasePrice,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, confirmo la compra!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const data1 = {
+          "idUser": id_user,
+          "idBook": idbook
+        }
+        console.log(data1)
+        Service.buyBook(data1)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            const data2 = {
+              "idUser": id_user,
+              "idBook": idbook,
+              "type": 2
+            }
+            Service.addHistory(data2)
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+            Swal.fire({
+              title: "Comprado!",
+              text: "Gracias por comprar en My Library!.",
+              icon: "success"
+            });
+            setTimeout(() => {
+              navigate("/user/mybooks")
+            }, 1000);
+          }
+        })
+      }
+    });
+  }
+
   const fetchData = async () => {
     try {
       console.log("ID");
@@ -138,7 +207,57 @@ const Book = () => {
     }
   };
 
+  const handleRent = () => {
+    console.log("Alquilar");
+    const idbook = Desencriptar(id);
+    if(fechaDevolucion === ""){
+      Swal.fire({
+        title: "Error!",
+        text: "Seleccione una fecha de devolución",
+        icon: "error"
+      });
+      handleCloseModal();
+    }
+    console.log(fechaDevolucion);
+    const data1 = {
+      "idUser": id_user,
+      "idBook": idbook,
+      "returnDate": parseDate(fechaDevolucion)
+    }
+    console.log(data1)
+    Service.rentBook(data1)
+    .then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        const data2 = {
+          "idUser": id_user,
+          "idBook": idbook,
+          "type": 1
+        }
+        Service.addHistory(data2)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        Swal.fire({
+          title: "Alquilado!",
+          text: "Gracias por alquilar en My Library!.",
+          icon: "success"
+        });
+        setTimeout(() => {
+          navigate("/user/mybooks")
+        }, 1000);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    }
+
   return (
+    <div>
     <div className="flex bg-zinc-900">
       <Toaster />
       <Sidebar />
@@ -173,6 +292,7 @@ const Book = () => {
             <button
               className="mb-2 sm:mb-0 align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-900 hover:bg-blue-500 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
               type="button"
+              onClick={handleBuy}
             >
               <MdOutlineAddShoppingCart className="inline-block mr-2 text-lg" />{" "}
               Comprar
@@ -180,6 +300,7 @@ const Book = () => {
             <button
               className="ml-2 mb-2 sm:mb-0 align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-green-900 hover:bg-green-500 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
               type="button"
+              onClick={handleRentModal}
             >
               <MdOutlineSell className="inline-block mr-2 text-lg" /> Alquilar
             </button>
@@ -256,6 +377,49 @@ const Book = () => {
           </form>
         </div>
       </div>
+    </div>
+    {modalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div
+            className="fixed inset-0 bg-gray-500 bg-opacity-50 z-10" 
+            onClick={() => setModalOpen(false)}
+          ></div>
+          <div className="bg-zinc-800 p-4 rounded-md shadow-md z-20"> {/* Ajusta el z-index del modal */}
+            {/* Contenido del modal */}
+            <h2 className="text-white">Alquilar</h2>
+            <p className="font-light text-white">Selecciona la fecha en que lo va a devolver</p>
+            <form>
+              <div className="mb-4">
+                <label htmlFor="fecha" className="block text-gray-700 font-bold mb-2">
+                  Fecha:
+                </label>
+                <input
+                  type="date"
+                  id="fecha"
+                  name="fecha"
+                  min={new Date().toISOString().split("T")[0]}
+                  onChange={handleDateChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                />
+              </div>
+              <button
+                type="button"
+                className="bg-green-500 text-white p-2 mr-2 rounded hover:bg-blue-700"
+                onClick={handleRent}
+              >Alquilar</button>
+
+              <button
+                type="button"
+                className="bg-blue-500 text-white p-2 rounded hover:bg-blue-700"
+                onClick={handleCloseModal}
+              >
+                Cerrar
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

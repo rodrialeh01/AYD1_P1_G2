@@ -7,7 +7,23 @@ import { useUser } from "../../userCtx/User";
 const History = () => {
     const navigate = useNavigate();
     const [nombre, setNombre] = useState('');
+    const [historial, setHistorial] = useState([]);
+    const tipoTransaccion = ["Alquilar", "Compra", "Devolución"]
     const { logged } = useUser();
+    function formatearFechaHora(fechaISO) {
+        const fecha = new Date(fechaISO);
+      
+        // Obtiene día, mes, año, horas, minutos y segundos
+        const dia = fecha.getDate().toString().padStart(2, '0');
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Suma 1 porque los meses van de 0 a 11
+        const anio = fecha.getFullYear();
+        const horas = fecha.getHours().toString().padStart(2, '0');
+        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const segundos = fecha.getSeconds().toString().padStart(2, '0');
+      
+        return `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
+    }
+
     useEffect(() => {
         if(!logged){
             navigate("/")
@@ -20,7 +36,17 @@ const History = () => {
         .catch((err) => {
             console.log(err);
         });
+        Service.getHistory(user.id)
+        .then((res) => {
+            console.log(res);
+            setHistorial(res.data.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }, []);
+
+    console.log(historial)
     return (
         <div className="flex bg-zinc-900">
             <Sidebar />
@@ -53,24 +79,27 @@ const History = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="border-b border-dashed last:border-b-0">
-                                        <td class="p-3 pl-0">
-                                            <div class="flex items-center">
-                                            <div class="relative inline-block shrink-0 rounded-2xl me-3">
-                                                <img src="https://cdn.icon-icons.com/icons2/41/PNG/128/redBook_7072.png" class="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt=""/>
-                                            </div>
-                                            <div class="flex flex-col justify-start">
-                                                <a href="javascript:void(0)" class="mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-primary"> El Principito </a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                        <td class="p-3 pr-12 text-end">
-                                            <span class="text-center align-baseline inline-flex px-4 py-3 mr-auto items-center font-semibold text-[.95rem] leading-none text-primary bg-primary-light rounded-lg"> Devuelto </span>
-                                        </td>
-                                        <td class="p-3 pr-0 text-end">
-                                            <span class="font-semibold text-light-inverse text-md/normal">2023-08-23</span>
-                                        </td>
-                                        </tr>
+                                        {historial.map((transaction, index) => (
+                                            <tr class="border-b border-dashed last:border-b-0">
+                                                <td class="p-3 pl-0">
+                                                    <div class="flex items-center">
+                                                    <div class="relative inline-block shrink-0 rounded-2xl me-3">
+                                                        <img src="https://cdn.icon-icons.com/icons2/41/PNG/128/redBook_7072.png" class="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt=""/>
+                                                    </div>
+                                                    <div class="flex flex-col justify-start">
+                                                        <a href="javascript:void(0)" className={`mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-primary`}> {transaction.idBook.title} </a>
+                                                    </div>
+                                                    </div>
+                                                </td>
+                                                <td class="p-3 pr-12 text-end">
+                                                    {console.log(transaction.bookState)}
+                                                    <span class={`text-center align-baseline inline-flex px-4 py-3 mr-auto items-center font-semibold text-[.95rem] leading-none ${transaction.bookState===0?'text-primary bg-primary-light':transaction.bookState===1?'text-warning bg-warning-light':'text-success bg-success-light'} rounded-lg`}> {tipoTransaccion[transaction.bookState-1]} </span>
+                                                </td>
+                                                <td class="p-3 pr-0 text-end">
+                                                    <span class="font-semibold text-light-inverse text-md/normal">{formatearFechaHora(transaction.createdAt)}</span>
+                                                </td>
+                                            </tr>
+                                        ))}
                                         
                                     </tbody>
                                     </table>
