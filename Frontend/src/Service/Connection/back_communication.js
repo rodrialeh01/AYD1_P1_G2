@@ -133,3 +133,49 @@ export const deleteComment = async (id) => {
     const response = await instance.delete(`/comment/delete/${id}`);
     return response;
 }
+
+// Comprar un libro
+export const buyBook = async (data) => {
+    const response = await instance.post(`/book/buyBook`, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+// Alquilar un libro
+export const rentBook = async (data) => {
+    const response = await instance.post(`/book/rentBook`, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+// Devolver un libro
+export const returnBook = async (data) => {
+    const response = await instance.post(`/book/returnBook`, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+//Agregar al historial
+export const addHistory = async (data) => {
+    const response = await instance.post('/history/set', data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+// Obtener el historial de un usuario
+export const getHistory = async (id) => {
+    const response = await instance.get(`/history/${id}`);
+    return response;
+}
