@@ -46,11 +46,6 @@ export const deleteUser = async (req, res) => {
             return;
         }
 
-        if (isRegistered.rentedBooks.length > 0) {
-            res.response(null, 'User has rented books', 400);
-            return;
-        }
-
         await User.deleteOne({ _id: id });
 
         await Comment.deleteMany({ idUser: id });
