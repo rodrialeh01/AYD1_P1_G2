@@ -151,7 +151,7 @@ const Book = () => {
             const data2 = {
               "idUser": id_user,
               "idBook": idbook,
-              "type": 2
+              "bookState": 2
             }
             Service.addHistory(data2)
             .then((res) => {
@@ -232,7 +232,7 @@ const Book = () => {
         const data2 = {
           "idUser": id_user,
           "idBook": idbook,
-          "type": 1
+          "bookState": 1
         }
         Service.addHistory(data2)
         .then((res) => {
