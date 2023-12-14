@@ -1,10 +1,11 @@
 import { Router } from "express";
 
-import {createBook,getBooks,getBookById,updateBookByID,deleteBook,buyBook,rentBook,returnBook} from "../controllers/book.controller.js";
+import {createBook,getBooks,getBookById,updateBookByID,deleteBook,buyBook,rentBook,returnBook,getAllBooks} from "../controllers/book.controller.js";
 
 const router = Router();
 
 router.get("/getBooks", getBooks);
+router.get("/getAllBooks", getAllBooks);
 router.post("/buyBook", buyBook);
 router.post("/rentBook", rentBook);
 router.post("/returnBook", returnBook);

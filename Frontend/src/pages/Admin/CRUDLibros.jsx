@@ -26,7 +26,7 @@ export default function CRUDLibros() {
 
     const obtData = async () => {
       try {
-        let res = await Service.getBooks();
+        let res = await Service.getAllBooks();
         if (res.status === 200) {
           setBooks(res.data.data);
           console.log("xd: ", res.data.data);
@@ -83,7 +83,7 @@ function Libros(books, response, setResponse) {
 
   const obtenerDatos = async () => {
     try {
-      let res = await Service.getBooks();
+      let res = await Service.getAllBooks();
       if (res.status === 200) {
         setData(res.data.data);
         console.log("xd: ", res.data.data);

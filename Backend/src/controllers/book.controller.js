@@ -48,6 +48,20 @@ export const getBooks = async (req, res) => {
     }
 }
 
+export const getAllBooks = async (req, res) => {
+    
+    try {
+        //devuelve todos los libros
+        const libros = await Book.find({}, { __v: 0 });
+
+        res.response(libros, 'Books retrieved successfully', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+}
+
 export const getBookById = async (req, res) => {
     try {
         const { id } = req.params;

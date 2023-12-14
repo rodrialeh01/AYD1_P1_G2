@@ -55,6 +55,8 @@ export const deleteUser = async (req, res) => {
 
         await Comment.deleteMany({ idUser: id });
 
+        await Book.updateMany({ _id: { $in: isRegistered.rentedBooks } }, { $pull: { bookState: 0 } });
+
         res.response(null, 'User deleted successfully', 200);
 
     } catch (error) {

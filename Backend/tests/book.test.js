@@ -155,6 +155,27 @@ describe("Test the rent book path", () => {
         expect(response.body.message).toBe("Book rented successfully");
     });
 
+    test("It should response a json with the books rented and purchased by the user", async () => {
+        const response = await request(app).get(`/user/books/${idUser}`).send();
+        expect(response.body.data).toBeDefined();;
+    });
+
+    test("It should response with a code 200", async () => {
+        const response = await request(app).post(`/history/set`).send(
+            {
+                "idUser": idUser,
+                "idBook": idBook,
+                "bookState": 1
+            }
+        );
+        expect(response.statusCode).toBe(200);
+    });
+
+    test("It should response a json with the history of the user", async () => {
+        const response = await request(app).get(`/history/${idUser}`).send();
+        expect(response.body.data).toBeDefined();;
+    });
+
     test("It should response with a message Book not available", async () => {
         const response = await request(app).post("/book/rentBook").send(
             {
@@ -352,4 +373,3 @@ describe("Test the delete user path", () => {
         expect(response.body.message).toBe("User deleted successfully");
     });
 });
-
