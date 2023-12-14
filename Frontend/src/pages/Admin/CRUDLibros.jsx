@@ -78,7 +78,7 @@ function Libros(books, response, setResponse) {
     author: "",
     editorial: "",
     bookState: 0,
-    publicationDate: "",
+    yearDate: 0,
   });
 
   const obtenerDatos = async () => {
@@ -454,6 +454,7 @@ function Libros(books, response, setResponse) {
                               name="title"
                               defaultValue={libroData.title}
                               onChange={handleInputChange}
+                              required={true}
                             ></input>
                           </div>
                         </div>
@@ -474,6 +475,7 @@ function Libros(books, response, setResponse) {
                               name="author"
                               defaultValue={libroData.author}
                               onChange={handleInputChange}
+                              required={true}
                             ></input>
                           </div>
                         </div>
@@ -495,6 +497,7 @@ function Libros(books, response, setResponse) {
                               name="editorial"
                               defaultValue={libroData.editorial}
                               onChange={handleInputChange}
+                              required={true}
                             ></input>
                           </div>
                         </div>
@@ -513,10 +516,11 @@ function Libros(books, response, setResponse) {
                               <input
                                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                                 id="inline-full-name"
-                                type="text"
+                                type="number"
                                 name="purchasePrice"
                                 defaultValue={libroData.purchasePrice}
                                 onChange={handleInputChange}
+                                required={true}
                               ></input>
                             </div>
                           </div>
@@ -533,10 +537,11 @@ function Libros(books, response, setResponse) {
                               <input
                                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                                 id="inline-full-name"
-                                type="text"
+                                type="number"
                                 name="rentalPrice"
                                 defaultValue={libroData.rentalPrice}
                                 onChange={handleInputChange}
+                                required={true}
                               ></input>
                             </div>
                           </div>
@@ -553,10 +558,11 @@ function Libros(books, response, setResponse) {
                               <input
                                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                                 id="inline-full-name"
-                                type="text"
-                                name="publicationDate"
-                                defaultValue={libroData.publicationDate}
+                                type="number"
+                                name="yearDate"
+                                defaultValue={libroData.yearDate}
                                 onChange={handleInputChange}
+                                required={true}
                               ></input>
                             </div>
                           </div>
@@ -578,6 +584,7 @@ function Libros(books, response, setResponse) {
                               name="synopsis"
                               defaultValue={libroData.synopsis}
                               onChange={handleInputChange}
+                              required={true}
                             ></textarea>
                           </div>
                         </div>
@@ -858,8 +865,8 @@ function Libros(books, response, setResponse) {
                                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                                 id="inline-full-name"
                                 type="text"
-                                name="publicationDate"
-                                defaultValue={libroData.publicationDate}
+                                name="yearDate"
+                                defaultValue={libroData.yearDate}
                                 readOnly={true}
                               ></input>
                             </div>
@@ -967,6 +974,7 @@ function Libros(books, response, setResponse) {
                               type="text"
                               name="title"
                               onChange={handleInputChange}
+                              required={true}
                             ></input>
                           </div>
                         </div>
@@ -986,6 +994,7 @@ function Libros(books, response, setResponse) {
                               type="text"
                               name="author"
                               onChange={handleInputChange}
+                              required={true}
                             ></input>
                           </div>
                         </div>
@@ -1006,6 +1015,7 @@ function Libros(books, response, setResponse) {
                               type="text"
                               name="editorial"
                               onChange={handleInputChange}
+                              required={true}
                             ></input>
                           </div>
                         </div>
@@ -1024,9 +1034,10 @@ function Libros(books, response, setResponse) {
                               <input
                                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                                 id="inline-full-name"
-                                type="text"
+                                type="number"
                                 name="purchasePrice"
                                 onChange={handleInputChange}
+                                required={true}
                               ></input>
                             </div>
                           </div>
@@ -1043,9 +1054,10 @@ function Libros(books, response, setResponse) {
                               <input
                                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                                 id="inline-full-name"
-                                type="text"
+                                type="number"
                                 name="rentalPrice"
                                 onChange={handleInputChange}
+                                required={true}
                               ></input>
                             </div>
                           </div>
@@ -1062,9 +1074,10 @@ function Libros(books, response, setResponse) {
                               <input
                                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                                 id="inline-full-name"
-                                type="text"
-                                name="publicationDate"
+                                type="number"
+                                name="yearDate"
                                 onChange={handleInputChange}
+                                required={true}
                               ></input>
                             </div>
                           </div>
@@ -1085,6 +1098,7 @@ function Libros(books, response, setResponse) {
                               type="text"
                               name="synopsis"
                               onChange={handleInputChange}
+                              required={true}
                             ></textarea>
                           </div>
                         </div>
