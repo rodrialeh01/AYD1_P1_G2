@@ -46,14 +46,11 @@ export const deleteUser = async (req, res) => {
             return;
         }
 
-        if (isRegistered.rentedBooks.length > 0) {
-            res.response(null, 'User has rented books', 400);
-            return;
-        }
-
         await User.deleteOne({ _id: id });
 
         await Comment.deleteMany({ idUser: id });
+
+        await Book.updateMany({ _id: { $in: isRegistered.rentedBooks } }, { $pull: { bookState: 0 } });
 
         res.response(null, 'User deleted successfully', 200);
 
