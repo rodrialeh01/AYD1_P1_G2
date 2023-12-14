@@ -37,7 +37,7 @@ En este apartado se encuentra las grabaciones del desarrollo de los sprints a lo
 
 
 ## Diagrama de caso de uso
-<div align="center"><img src="./imgs/Diagrama.png"/></div>
+<div align="center"><img src="./imgs/Diagrama.jpg"/></div>
 
 ## Casos de alto nivel
 
