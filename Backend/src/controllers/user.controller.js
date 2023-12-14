@@ -1,6 +1,6 @@
-import { User } from '../db/models/user.model.js';
 import { Book } from '../db/models/book.model.js';
 import { Comment } from '../db/models/comment.model.js';
+import { User } from '../db/models/user.model.js';
 
 export const getUser = async (req, res) => {
     try{
@@ -50,7 +50,7 @@ export const deleteUser = async (req, res) => {
 
         await Comment.deleteMany({ idUser: id });
 
-        await Book.updateMany({ _id: { $in: isRegistered.rentedBooks } }, { $pull: { bookState: 0 } });
+        await Book.updateMany({ _id: { $in: isRegistered.rentedBooks } }, { $set: { bookState: 0 } });
 
         res.response(null, 'User deleted successfully', 200);
 
